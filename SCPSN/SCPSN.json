@@ -1,0 +1,13 @@
+{
+    "id": "SCPSN",
+    "name": "SCPSN",
+    "author": [ "ceo_of_balatro" ],
+    "description": "Turns some vanilla jokers into an SMODS format, and changes them to give some examples of what you can do.",
+    "prefix": "scpsn",
+    "main_file": "SCPSN.lua",
+    "badge_colour": "80a8e8",
+    "dependencies": [
+        "Steamodded (>=1.0.0~ALPHA-1225a)"
+    ],
+    "version": "1.0.0"
+}
