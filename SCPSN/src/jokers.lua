@@ -1178,7 +1178,7 @@ SMODS.Joker {
 SMODS.Joker {
 	key = 'demoknight_balatro',
 	loc_txt = {
-		name = 'Demoknight Balatro',
+		name = 'Jokerknight Balatro',
 		text = {
 			--[[
 			- The #1# is a variable that's stored in config, and is put into 'loc_vars'.

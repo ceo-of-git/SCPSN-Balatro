@@ -97,10 +97,9 @@ SMODS.Blind{
                 trigger = 'after', delay = 0.5, blocking = true,
                 func = function()
                     -- G.P_BLINDS.bl_final_vessel
-                    G.GAME.blind:set_blind(G.P_BLINDS['bl_scpsn_ultrahot'], nil, nil)
                     play_sound('scpsn_heat_pulse_break', nil, 0.5)
                     G.GAME.blind:change_colour(HEX('ff6200'))
-                    play_sound('timpani')
+                    G.GAME.blind:set_blind(G.P_BLINDS['bl_scpsn_ultrahot'], nil, nil)
                     return true
                 end
             }))
