@@ -83,8 +83,6 @@ SMODS.Joker {
     end
 }
 
-
-
 -- Truck that Can't Slow Down!
 SMODS.Sound({key = "insurance_fraud", path = "insurance_fraud.ogg",})
 SMODS.Joker {
@@ -161,8 +159,6 @@ SMODS.Joker {
 		return card.ability.extra.dollars
 	end
 }
-
-
 
 -- PS+ Giftcard
 SMODS.Joker {
@@ -1254,6 +1250,7 @@ function calculate_purity_levels()
     return count
 end
 
+-- Cartel Card
 SMODS.Joker {
 	key = 'cartel_card',
 	loc_txt = {
@@ -1389,5 +1386,79 @@ SMODS.Joker {
         end
     end,
 }
+
+-- Bibically Accurate Wario
+SMODS.Joker {
+	key = 'bible_wario',
+	loc_txt = {
+		name = 'Biblically Accurate Wario',
+		text = {
+			--[[
+			- The #1# is a variable that's stored in config, and is put into 'loc_vars'.
+
+			FORMATTING:
+			{C:} -> Color ... Options: mult (red), chips (blue), money (yellow), inactive (dull gray), red (discards), attention (bright orange), dark_edition (negative), green (green)
+			{X:} -> Background color, usually used for XMult
+			{s:} -> Scale, multiplies the text size by the value, like 0.8
+			{V:} -> Variable, allows for a variable to dynamically change the color, like in Castle joker.
+
+			You can put in {} to RESET all formatting, similar to HTMLS "</color>".
+			#1# = Variable #1 (in the Config section), #2# = Variable #2, etc.
+
+			Example:
+			{C:mult}+#1# {} Mult  ->  +4 Mult
+			]]
+			
+			"Gain {C:money}+1$ per {C:money}Gold{} card ",
+			"in deck end of round",
+			"{C:inactive}(Currently:{} {C:money}+#1#${}{C:inactive}){}",
+			'{C:inactive,s:0.8}"I LOVE FAT STACKS OF CASH"{}'
+
+		}
+	},
+
+	-- Establish variables here in a list like fashion. Use this always even if the joker doesn't change any variable.
+	-- Example (Vanilla Joker): "config = { extra = { mult = 4 } }"
+	-- Example (Vanilla Runner): "config = { extra = { chips = 0, chip_gain = 15 } },"
+	config = { extra = { dollars = 1, dollars_gain = 1 } },
+
+	
+	-- Misc Options:
+	atlas = 'SCPSN_Jokers',
+	pos = { x = 0, y = 6 },
+	rarity = 2,					-- 1 common, 2 uncommon, 3 rare, 4 legendary.
+	blueprint_compat = false,	-- Whether it can be copied by blueprint or other jokers.
+	perishable_compat = true,	-- Whether it can have the perishable sticker on it.
+
+	unlocked = true,			-- Whether this joker is unlocked by default or not.
+	cost = 6,					-- Cost of card in shop.
+	pools = {["tower_card"] = true, ["scpsn_addition"] = true},
+
+    loc_vars = function(self, info_queue, card)
+        local gold_tally = 0
+        if G.playing_cards then
+            for _, playing_card in ipairs(G.playing_cards) do
+				if SMODS.has_enhancement(playing_card, 'm_gold') then gold_tally = gold_tally + card.ability.extra.dollars_gain end
+			end
+			card.ability.extra.dollars = gold_tally
+		end
+        return { vars = { card.ability.extra.dollars, card.ability.extra.dollars + gold_tally } }
+    end,
+
+	-- The Jokers Function.
+    calculate = function(self, card, context)
+        if context.individual and context.cardarea == G.play then
+			if SMODS.has_enhancement(context.other_card, 'm_gold') then
+				return {
+					mult = card.ability.extra.mult
+				}
+			end
+        end
+    end,
+
+	calc_dollar_bonus = function(self, card)
+        return card.ability.extra.dollars
+    end
+}
 ----------------------------------------------------------
------------ MOD CODE END ----------------------------------
+----------- MOD CODE END -----------------------=---------
