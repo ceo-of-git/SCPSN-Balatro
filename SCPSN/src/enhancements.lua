@@ -22,11 +22,34 @@ SMODS.Enhancement{
         label = "Pure",
         text = {
             "When Held in Hand:",
-            "{C:chips}+75 Chips{}",
+            "{C:chips}+10{} Chips",
+            "{X:chips,C:white}X1.2{} Chips"
         }
     },
 
     config = {
-        h_chips = 75,
+        h_chips = 10,
+        h_x_chips = 1.2,
+    }
+}
+
+-- Unpure
+SMODS.Enhancement{
+    key = 'unpure',
+    atlas = 'SCPSN_Enhancements',
+    pos = { x = 1, y = 0},
+    shatters = true,
+
+    loc_txt = {
+        name = "96.2% Purity",
+        label = "Pure",
+        text = {
+            "When Held in Hand:",
+            "{C:chips}+45{} Chips",
+        }
+    },
+
+    config = {
+        h_chips = 45,
     }
 }

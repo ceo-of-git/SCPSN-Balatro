@@ -275,8 +275,8 @@ SMODS.Joker {
 			{C:mult}+#1# {} Mult  ->  +4 Mult
 			]]
 			
-			"Retrigger all {C:chips}Clubs{} {C:attention}1 {}Time.",
-			"{C:mult}+0.5 Mult{} per {C:chips}Club{} Scored."
+			"Retrigger all {C:clubs}Clubs{} {C:attention}1 {}Time.",
+			"{C:mult}+0.5 Mult{} per {C:clubs}Club{} Scored."
 		}
 	},
 
@@ -879,7 +879,7 @@ SMODS.Joker {
 			]]
 			
 			"{C:chips}+#1#{} Chips",
-			"{C:chips}+1{} Chip per {C:chips}Club Card{} Scored.",
+			"{C:chips}+1{} Chip per {C:clubs}Club Card{} Scored.",
 
 		}
 	},
@@ -1174,7 +1174,7 @@ SMODS.Joker {
     end
 }
 
--- Hesitant Joker
+-- Jokerknight Balatro
 SMODS.Joker {
 	key = 'demoknight_balatro',
 	loc_txt = {
@@ -1239,5 +1239,155 @@ SMODS.Joker {
     end,
 }
 
+-- The Cartel
+function calculate_purity_levels()
+    local count = 0
+    for _, card in ipairs(G.playing_cards) do
+		if SMODS.has_enhancement(card, 'm_scpsn_pure') then
+			count = count + 1.25
+		end
+
+		if SMODS.has_enhancement(card, 'm_scpsn_unpure') then
+			count = count + 1.1
+		end
+	end
+    return count
+end
+
+SMODS.Joker {
+	key = 'cartel_card',
+	loc_txt = {
+		name = 'The Cartel',
+		text = {
+			--[[
+			- The #1# is a variable that's stored in config, and is put into 'loc_vars'.
+
+			FORMATTING:
+			{C:} -> Color ... Options: mult (red), chips (blue), money (yellow), inactive (dull gray), red (discards), attention (bright orange), dark_edition (negative), green (green)
+			{X:} -> Background color, usually used for XMult
+			{s:} -> Scale, multiplies the text size by the value, like 0.8
+			{V:} -> Variable, allows for a variable to dynamically change the color, like in Castle joker.
+
+			You can put in {} to RESET all formatting, similar to HTMLS "</color>".
+			#1# = Variable #1 (in the Config section), #2# = Variable #2, etc.
+
+			Example:
+			{C:mult}+#1# {} Mult  ->  +4 Mult
+			]]
+			
+			"Gain +{X:mult,C:white}X0.25{} Mult per {X:chips,C:white}99.1%{} pure card &",
+			"Gain +{X:mult,C:white}X0.10{} Mult per {X:planet,C:white}96.2%{} pure card",
+			"in the entire deck",
+			"{C:inactive}Currently{} {X:mult,C:white}X#1#{} {C:inactive}Mult{}"
+
+		}
+	},
+
+	-- Establish variables here in a list like fashion. Use this always even if the joker doesn't change any variable.
+	-- Example (Vanilla Joker): "config = { extra = { mult = 4 } }"
+	-- Example (Vanilla Runner): "config = { extra = { chips = 0, chip_gain = 15 } },"
+	config = { extra = { xmult = 1, gain_pure = 1.25, gain_unpure = 1.10} },
+
+	
+	-- Misc Options:
+	atlas = 'SCPSN_Jokers',
+	pos = { x = 2, y = 5 },
+	rarity = 1,					-- 1 common, 2 uncommon, 3 rare, 4 legendary.
+	blueprint_compat = true,	-- Whether it can be copied by blueprint or other jokers.
+	perishable_compat = true,	-- Whether it can have the perishable sticker on it.
+
+	unlocked = true,			-- Whether this joker is unlocked by default or not.
+	cost = 6,					-- Cost of card in shop.
+	pools = {["scpsn_addition"] = true}, -- Add the Card to this mods pool :)
+
+	-- Not 100% Sure what this does at all.
+    loc_vars = function(self, info_queue, card)
+        local pure_tally = 1
+        if G.playing_cards then
+            for _, playing_card in ipairs(G.playing_cards) do
+				if SMODS.has_enhancement(playing_card, 'm_scpsn_pure') then pure_tally = pure_tally + 0.25 end
+				if SMODS.has_enhancement(playing_card, 'm_scpsn_unpure') then pure_tally = pure_tally + 0.10 end
+			end
+			card.ability.extra.xmult = pure_tally
+		end
+        return { vars = { card.ability.extra.xmult, card.ability.extra.xmult + pure_tally } }
+    end,
+
+    calculate = function(self, card, context)
+        if context.joker_main then
+			return {
+				xmult = card.ability.extra.xmult
+			}
+		end
+    end
+
+}
+
+-- Stone Golem
+SMODS.Joker {
+	key = 'stone_golem',
+	loc_txt = {
+		name = 'Stone Golem',
+		text = {
+			--[[
+			- The #1# is a variable that's stored in config, and is put into 'loc_vars'.
+
+			FORMATTING:
+			{C:} -> Color ... Options: mult (red), chips (blue), money (yellow), inactive (dull gray), red (discards), attention (bright orange), dark_edition (negative), green (green)
+			{X:} -> Background color, usually used for XMult
+			{s:} -> Scale, multiplies the text size by the value, like 0.8
+			{V:} -> Variable, allows for a variable to dynamically change the color, like in Castle joker.
+
+			You can put in {} to RESET all formatting, similar to HTMLS "</color>".
+			#1# = Variable #1 (in the Config section), #2# = Variable #2, etc.
+
+			Example:
+			{C:mult}+#1# {} Mult  ->  +4 Mult
+			]]
+			
+			"Played {C:inactive}Stone{} Cards",
+			"Give {C:mult}+#1#{} Mult when scored"
+
+		}
+	},
+
+	-- Establish variables here in a list like fashion. Use this always even if the joker doesn't change any variable.
+	-- Example (Vanilla Joker): "config = { extra = { mult = 4 } }"
+	-- Example (Vanilla Runner): "config = { extra = { chips = 0, chip_gain = 15 } },"
+	config = { extra = { mult = 6 } },
+
+	
+	-- Misc Options:
+	atlas = 'SCPSN_Jokers',
+	pos = { x = 0, y = 6 },
+	rarity = 1,					-- 1 common, 2 uncommon, 3 rare, 4 legendary.
+	blueprint_compat = true,	-- Whether it can be copied by blueprint or other jokers.
+	perishable_compat = true,	-- Whether it can have the perishable sticker on it.
+
+	unlocked = true,			-- Whether this joker is unlocked by default or not.
+	cost = 6,					-- Cost of card in shop.
+	pools = {["scpsn_addition"] = true}, -- Add the Card to this mods pool :)
+
+
+	-- Not 100% Sure what this does at all.
+	loc_vars = function(self, info_queue, card)
+		return {
+			vars = {
+				card.ability.extra.mult,
+			}
+		}
+	end,
+
+	-- The Jokers Function.
+    calculate = function(self, card, context)
+        if context.individual and context.cardarea == G.play then
+			if SMODS.has_enhancement(context.other_card, 'm_stone') then
+				return {
+					mult = card.ability.extra.mult
+				}
+			end
+        end
+    end,
+}
 ----------------------------------------------------------
 ----------- MOD CODE END ----------------------------------
