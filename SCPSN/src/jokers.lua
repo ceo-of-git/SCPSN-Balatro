@@ -1586,41 +1586,6 @@ SMODS.Joker {
 
 	-- The Jokers Function.
     calculate = function(self, card, context)
-		--[[
-		if context.before and context.main_eval and not context.blueprint then
-			local leEpicCounter = 0
-			print(leEpicCounter)
-
-            for _, playing_card in ipairs(context.scoring_hand) do
-				print("trying B")
-				print(leEpicCounter)
-
-				if SMODS.get_enhancements(playing_card, 'm_stone' ) then 
-					leEpicCounter = leEpicCounter + 2 -- Stone cards
-				end
-
-				if playing_card:get_id() == 14 and not SMODS.get_enhancements(playing_card, 'm_stone' ) then 
-					leEpicCounter = leEpicCounter + 1 -- Aces
-				end
-
-				if playing_card:get_id() == 13 and not SMODS.get_enhancements(playing_card, 'm_stone' ) then 
-					leEpicCounter = leEpicCounter + 10 -- King
-				end
-
-				if playing_card:get_id() == 12 and not SMODS.get_enhancements(playing_card, 'm_stone' ) then 
-					leEpicCounter = leEpicCounter + 10 -- Queen
-				end
-
-				if playing_card:get_id() == 11 and not SMODS.get_enhancements(playing_card, 'm_stone' ) then 
-					leEpicCounter = leEpicCounter + 10  -- Jack
-				end
-				
-				if not playing_card:get_id() == 11 or 12 or 13 or 14 and not SMODS.get_enhancements(playing_card, 'm_stone' ) then
-					leEpicCounter = leEpicCounter + playing_card:get_id() -- Everything Else
-				end
-			end
-		end
-		--]]
 
 		if context.joker_main then
 			local leEpicCounter = 0
@@ -1672,6 +1637,82 @@ SMODS.Joker {
 			end
 		end
 	end
+}
+
+-- Jooner
+SMODS.Joker {
+	key = 'jooner',
+	loc_txt = {
+		name = 'Jooner',
+		text = {
+			--[[
+			- The #1# is a variable that's stored in config, and is put into 'loc_vars'.
+
+			FORMATTING:
+			{C:} -> Color ... Options: mult (red), chips (blue), money (yellow), inactive (dull gray), red (discards), attention (bright orange), dark_edition (negative), green (green)
+			{X:} -> Background color, usually used for XMult
+			{s:} -> Scale, multiplies the text size by the value, like 0.8
+			{V:} -> Variable, allows for a variable to dynamically change the color, like in Castle joker.
+
+			You can put in {} to RESET all formatting, similar to HTMLS "</color>".
+			#1# = Variable #1 (in the Config section), #2# = Variable #2, etc.
+
+			Example:
+			{C:mult}+#1# {} Mult  ->  +4 Mult
+			]]
+			
+			"{C:attention}Prevents Death{} if scored",
+			"chips are above 90% the required amount."
+
+		}
+	},
+
+	-- Establish variables here in a list like fashion. Use this always even if the joker doesn't change any variable.
+	-- Example (Vanilla Joker): "config = { extra = { mult = 4 } }"
+	-- Example (Vanilla Runner): "config = { extra = { chips = 0, chip_gain = 15 } },"
+	config = { extra = { mult = 6 } },
+
+	
+	-- Misc Options:
+	atlas = 'SCPSN_Jokers',
+	pos = { x = 0, y = 6 },
+	rarity = 1,					-- 1 common, 2 uncommon, 3 rare, 4 legendary.
+	blueprint_compat = true,	-- Whether it can be copied by blueprint or other jokers.
+	perishable_compat = true,	-- Whether it can have the perishable sticker on it.
+
+	unlocked = true,			-- Whether this joker is unlocked by default or not.
+	cost = 6,					-- Cost of card in shop.
+	pools = {["scpsn_addition"] = true}, -- Add the Card to this mods pool :)
+
+
+	-- Not 100% Sure what this does at all.
+	loc_vars = function(self, info_queue, card)
+		return {
+			vars = {
+				card.ability.extra.mult,
+			}
+		}
+	end,
+
+    calculate = function(self, card, context)
+        if context.end_of_round and context.game_over and context.main_eval then
+            if G.GAME.chips / G.GAME.blind.chips >= 0.90 then -- See note about Talisman compatibility at the bottom
+                G.E_MANAGER:add_event(Event({
+                    func = function()
+                        G.hand_text_area.blind_chips:juice_up()
+                        G.hand_text_area.game_chips:juice_up()
+                        play_sound('tarot1')
+                        return true
+                    end
+                }))
+                return {
+                    message = localize('Saved!'),
+                    saved = 'Saved by Jooner!',
+                    colour = G.C.RED
+                }
+            end
+        end
+    end,
 }
 
 ----------------------------------------------------------
