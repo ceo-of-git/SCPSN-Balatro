@@ -109,7 +109,6 @@ SMODS.Blind{
     end
 
 
-
 }
 
 SMODS.Blind{

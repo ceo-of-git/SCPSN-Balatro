@@ -10,6 +10,7 @@ SMODS.Atlas {
 	py = 95
 }
 
+-- Walter White (99.1% Purity)
 SMODS.Consumable{
     key = 'tarot_methcook',
     set = 'Tarot',
@@ -29,6 +30,7 @@ SMODS.Consumable{
 
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue + 1] = G.P_CENTERS[card.ability.mod_conv]
+        play_sound('someone_cooked_here', nil, 0.5)
         return { vars = { card.ability.max_highlighted, localize { type = 'name_text', set = 'Enhanced', key = card.ability.mod_conv } } }
     end,
 }
@@ -49,12 +51,41 @@ SMODS.Consumable{
         }
     },
 
-    config = { max_highlighted = 3, mod_conv = 'm_scpsn_unpure' },
+    config = { max_highlighted = 2, mod_conv = 'm_scpsn_unpure' },
 
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue + 1] = G.P_CENTERS[card.ability.mod_conv]
         return { vars = { card.ability.max_highlighted, localize { type = 'name_text', set = 'Enhanced', key = card.ability.mod_conv } } }
     end,
+}
 
+SMODS.Sound({key = "judgement_scpsn", path = "joker_landing.ogg",})
+SMODS.Consumable {
+    key = 'scspn_judgement',
+    set = 'Tarot',
 
+    atlas = 'SCPSN_Tarots',
+    pos = {x = 2, y = 0},
+
+    loc_txt = {
+        name = "JUDGEMENT!",
+        label = "JUDGEMENT!",
+        text = {
+            "Spawn a random Joker from",
+            "the {X:chips,C:white}SCPSN{} mod.",
+            "{C:inactive,s:0.8}(Legendaries Excluded){}"
+        }
+    },
+
+    -- Yoinked form Yahoo mod.
+    use = function(self, card, area, copier)
+        local card = create_card("scpsn_addition", G.Jokers, nil, nil, nil, nil, nil, 'scpsn')
+        card:add_to_deck()
+        G.jokers:emplace(card)
+        play_sound('scpsn_judgement_scpsn', nil, 0.5)
+    end,
+
+    can_use = function(self, card)
+        return G.jokers and #G.jokers.cards < G.jokers.config.card_limit
+    end
 }
