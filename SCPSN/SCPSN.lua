@@ -27,6 +27,135 @@ SMODS.ObjectType({
 	end,
 })
 
+
+-- CREDITS
+-- Code also stolen from yahimod because i am a LEECH
+local creditspage = {
+        "Yahiamice",
+        "(mod author, 99% of the work)",
+		"",
+        "Lisnovski, Blake Andrews, violxiv",
+        "Art assets",
+		"",
+		"Nova_422, Sciman101",
+        "Code contributions",
+		"",
+		"meganeko",
+        "Cybergrind soundtrack",
+		"",
+        "HexaCryonic, Burssty",
+        "Playtesting",
+    }
+
+SMODS.current_mod.extra_tabs = function() --Credits tab
+    local scale = 0.5
+    return {
+        label = "Credits",
+        tab_definition_function = function()
+        return {
+            n = G.UIT.ROOT,
+            config = {
+            align = "cm",
+            padding = 0.05,
+            colour = G.C.CLEAR,
+            },
+            nodes = {
+            {
+                n = G.UIT.R,
+                config = {
+                padding = 0,
+                align = "cm"
+                },
+                nodes = {
+                {
+                    n = G.UIT.T,
+                    config = {
+                    text = "By ceo_of_balatro & TheMaster",
+                    shadow = false,
+                    scale = scale*2,
+                    colour = G.C.PURPLE
+                    }
+                }
+                }
+            },
+            {
+                n = G.UIT.R,
+                config = {
+                padding = 0,
+                align = "cm"
+                },
+                nodes = {
+                {
+                    n = G.UIT.T,
+                    config = {
+                    text = "Code kindly stolen from:",
+                    shadow = false,
+                    scale = scale*0.66,
+                    colour = G.C.INACTIVE
+                    }
+                }
+                },
+            },
+            {
+                n = G.UIT.R,
+                config = {
+                padding = 0,
+                align = "cm"
+                },
+                nodes = {
+                {
+                    n = G.UIT.T,
+                    config = {
+                    text = "Cryptid Mod & the Yahimod",
+                    shadow = false,
+                    scale = scale,
+                    colour = G.C.GREEN
+                    }
+                }
+                } 
+            },
+            {
+                n = G.UIT.R,
+                config = {
+                padding = 0,
+                align = "cm"
+                },
+                nodes = {
+                {
+                    n = G.UIT.T,
+                    config = {
+                    text = "Additional Music:",
+                    shadow = false,
+                    scale = scale*0.66,
+                    colour = G.C.INACTIVE
+                    }
+                }
+                } 
+            },
+            {
+                n = G.UIT.R,
+                config = {
+                padding = 0,
+                align = "cm"
+                },
+                nodes = {
+                {
+                    n = G.UIT.T,
+                    config = {
+                    text = "A Heart of Cold - Heaven Pierce Her / Dead Heat Pulse - Heaven Pierce Her",
+                    shadow = false,
+                    scale = scale*0.75,
+                    colour = G.C.RED
+                    }
+                }
+                } 
+            }
+            }
+        }
+        end
+    }
+end
+
 ----------------------------------------------
 ------------MOD CODE END----------------------
 
