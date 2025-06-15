@@ -4,7 +4,6 @@
 assert(SMODS.load_file("src/jokers_common.lua"))()
 assert(SMODS.load_file("src/jokers_uncommon.lua"))()
 assert(SMODS.load_file("src/jokers_rare.lua"))()
-assert(SMODS.load_file("src/jokers_lunar.lua"))()
 assert(SMODS.load_file("src/jokers_legendary.lua"))()
 --assert(SMODS.load_file("src/backs.lua"))()
 --assert(SMODS.load_file("src/seals.lua"))()
@@ -12,8 +11,22 @@ assert(SMODS.load_file("src/jokers_legendary.lua"))()
 assert(SMODS.load_file("src/bosses.lua"))()
 assert(SMODS.load_file("src/enhancements.lua"))()
 assert(SMODS.load_file("src/tarots.lua"))()
+assert(SMODS.load_file("src/booster_packs.lua"))()
 --assert(SMODS.load_file("src/editions.lua"))()
 --assert(SMODS.load_file("src/spectrals.lua"))()
 
+
+-- SCPSN Joker Pool
+-- Code taken from Yahimod
+SMODS.ObjectType({
+	key = "scpsn_addition",
+	default = "j_reserved_parking",
+	cards = {},
+	inject = function(self)
+		SMODS.ObjectType.inject(self)
+	end,
+})
+
 ----------------------------------------------
 ------------MOD CODE END----------------------
+

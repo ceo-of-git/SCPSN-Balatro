@@ -270,5 +270,81 @@ SMODS.Joker {
     end
 }
 
+-- Reroll Trinket
+SMODS.Joker {
+    key = "reroll",
+		loc_txt = {
+		name = 'Reroll Trinket',
+		text = {
+			"{C:attention}Enhances{} {C:green}#2# in #3#{} scored cards",
+			"{C:mult}Unenhances{} cards it doesn't land on"
+			-- "{X:mult,C:white} X4 {} Mult",
+
+			-- "{C:green}#2# in #3#{} chance this",
+			-- "card explodes and",
+			-- "ends run at end",
+			-- "of round"
+		
+		}
+	},
+	atlas = 'SCPSN_Jokers_Rare',
+
+    pos = { x = 0, y = 1 },
+    rarity = 3,
+    blueprint_compat = false,
+    cost = 8,
+	pools = {["scpsn_addition"] = true}, -- Add the Card to this mods pool :)
+    config = { extra = { mult = 4, odds = 3}, },
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.mult, (G.GAME.probabilities.normal or 1), card.ability.extra.odds} }
+    end,
+    calculate = function(self, card, context)
+        if context.before and context.main_eval and not context.blueprint then
+			for _, scored_card in ipairs(context.scoring_hand) do
+				if pseudorandom('reroll') < G.GAME.probabilities.normal / card.ability.extra.odds then
+					local edition = poll_edition('testing', nil, true, true,
+                    { 'e_polychrome', 'e_holo', 'e_foil' })
+				scored_card:set_edition(edition, true)
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						scored_card:juice_up()
+						return true
+					end
+				}))
+
+				else
+					scored_card:set_edition(nil, true)
+				end
+			end
+        end
+    end
+}
+
+-- Cryptid Six Fingers Copy!!!!!!!
+SMODS.Joker {
+    key = "sixfingers_but_cool",
+	loc_txt = {
+		name = 'Extremely Illegal Poker Hand',
+		text = {
+			"Allows you to select {C:attention}6{}",
+			"cards per hand / discard",
+		}
+	},
+
+    blueprint_compat = false,
+    rarity = 3,
+    cost = 10,
+	atlas = 'SCPSN_Jokers_Rare',
+    pos = { x = 1, y = 1 },
+    add_to_deck = function(self, card, from_debuff)
+		SMODS.change_discard_limit(1)
+		SMODS.change_play_limit(1)
+    end,
+
+    remove_from_deck = function(self, card, from_debuff)
+        SMODS.change_discard_limit(-1)
+		SMODS.change_play_limit(-1)
+    end
+}
 ----------------------------------------------------------
 ----------- MOD CODE END -----------------------=---------

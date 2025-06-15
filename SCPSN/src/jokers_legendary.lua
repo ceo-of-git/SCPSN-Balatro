@@ -80,8 +80,6 @@ SMODS.Joker {
 		if context.before and context.main_eval then
 			for _, scored_card in ipairs(context.scoring_hand) do
 				scored_card:set_edition('e_negative', true)
-				scored_card:juice_up(0.3, 0.5)
-				self:juice_up(0.3, 0.5)
 			end
 
 			play_sound('scpsn_false_son', nil, 0.5)

@@ -772,5 +772,448 @@ SMODS.Joker {
     end,
 }
 
+-- Jokers Basics'
+SMODS.Joker {
+	key = 'baldi_joker',
+	loc_txt = {
+		name = 'Jokers Basics',
+		text = {
+			--[[
+			- The #1# is a variable that's stored in config, and is put into 'loc_vars'.
+
+			FORMATTING:
+			{C:} -> Color ... Options: mult (red), chips (blue), money (yellow), inactive (dull gray), red (discards), attention (bright orange), dark_edition (negative), green (green)
+			{X:} -> Background color, usually used for XMult
+			{s:} -> Scale, multiplies the text size by the value, like 0.8
+			{V:} -> Variable, allows for a variable to dynamically change the color, like in Castle joker.
+
+			You can put in {} to RESET all formatting, similar to HTMLS "</color>".
+			#1# = Variable #1 (in the Config section), #2# = Variable #2, etc.
+
+			Example:
+			{C:mult}+#1# {} Mult  ->  +4 Mult
+			]]
+			
+			"{X:mult,C:white}X#1#{} Mult when a 3 is Scored",
+			"{C:mult}+#2#{} Mult when a 9 is Scored"
+
+		}
+	},
+
+	-- Establish variables here in a list like fashion. Use this always even if the joker doesn't change any variable.
+	-- Example (Vanilla Joker): "config = { extra = { mult = 4 } }"
+	-- Example (Vanilla Runner): "config = { extra = { chips = 0, chip_gain = 15 } },"
+	config = { extra = { xmult = 1.3, mult = 9 } },
+
+	
+	-- Misc Options:
+	atlas = 'SCPSN_Jokers_Common',
+	pos = { x = 0, y = 3 },
+	rarity = 1,					-- 1 common, 2 uncommon, 3 rare, 4 legendary.
+	blueprint_compat = true,	-- Whether it can be copied by blueprint or other jokers.
+	perishable_compat = true,	-- Whether it can have the perishable sticker on it.
+
+	unlocked = true,			-- Whether this joker is unlocked by default or not.
+	cost = 6,					-- Cost of card in shop.
+	pools = {["scpsn_addition"] = true}, -- Add the Card to this mods pool :)
+
+
+	-- Not 100% Sure what this does at all.
+	loc_vars = function(self, info_queue, card)
+		return {
+			vars = {
+				card.ability.extra.xmult,
+				card.ability.extra.mult,
+			}
+		}
+	end,
+
+	-- The Jokers Function.
+    calculate = function(self, card, context)
+        if context.individual and context.cardarea == G.play then
+			if context.other_card:get_id() == 3 then
+				return {
+					xmult = card.ability.extra.xmult
+				}
+			end
+			if context.other_card:get_id() == 9 then
+				return {
+					mult = card.ability.extra.mult
+				}
+			end
+        end
+    end,
+}
+
+-- :Evil Joker:
+SMODS.Joker {
+	key = 'evil_joker',
+	loc_txt = {
+		name = ':evil_joker:',
+		text = {
+			--[[
+			- The #1# is a variable that's stored in config, and is put into 'loc_vars'.
+
+			FORMATTING:
+			{C:} -> Color ... Options: mult (red), chips (blue), money (yellow), inactive (dull gray), red (discards), attention (bright orange), dark_edition (negative), green (green)
+			{X:} -> Background color, usually used for XMult
+			{s:} -> Scale, multiplies the text size by the value, like 0.8
+			{V:} -> Variable, allows for a variable to dynamically change the color, like in Castle joker.
+
+			You can put in {} to RESET all formatting, similar to HTMLS "</color>".
+			#1# = Variable #1 (in the Config section), #2# = Variable #2, etc.
+
+			Example:
+			{C:mult}+#1# {} Mult  ->  +4 Mult
+			]]
+
+			"{C:mult}#1#{} Mult, {X:mult,C:white}X#2# {} Mult"
+		}
+	},
+
+	-- Establish variables here in a list like fashion. Use this always even if the joker doesn't change any variable.
+	-- Example (Vanilla Joker): "config = { extra = { mult = 4 } }"
+	-- Example (Vanilla Runner): "config = { extra = { chips = 0, chip_gain = 15 } },"
+	config = { extra = { mult = -4, xmult = 1.4 } },
+
+	
+	-- Misc Options:
+	atlas = 'SCPSN_Jokers_Common',		-- Atlas ID (Set at the top of the file)
+	pos = { x = 1, y = 3 },		-- This card's position on the atlas, starting at {x=0,y=0} for the very top left.
+
+	rarity = 1,					-- 1 common, 2 uncommon, 3 rare, 4 legendary.
+	blueprint_compat = true,	-- Whether it can be copied by blueprint or other jokers.
+	perishable_compat = true,	-- Whether it can have the perishable sticker on it.
+
+	unlocked = true,			-- Whether this joker is unlocked by default or not.
+	cost = 2,					-- Cost of card in shop.
+	pools = {["scpsn_addition"] = true}, -- Add the Card to this mods pool :)
+
+
+	-- Not 100% Sure what this does at all.
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.mult, card.ability.extra.xmult } }
+	end,
+
+	-- The Jokers Function.
+    calculate = function(self, card, context)
+
+		-- Contexts are basically when the Joker chooses to do a thing.
+		-- To find contexts, look at Here: https://raw.githubusercontent.com/nh6574/VanillaRemade/refs/heads/main/src/jokers.lua
+        if context.joker_main then
+            return {
+                mult = card.ability.extra.mult,
+				xmult = card.ability.extra.xmult
+            }
+        end
+    end
+}
+
+-- Ticking Time Bomb
+SMODS.Joker {
+	key = 'ticking_bomb',
+	loc_txt = {
+		name = 'Ticking Time Bomb',
+		text = {
+			"{C:mult}+35{} Mult",
+			"{X:mult,C:white} X3 {} Mult",
+
+			"{C:green}#3# in #4#{} chance this",
+			"bomb explodes and you lose",
+			"at end of round",
+		}
+	},
+	config = { extra = { mult = 35, Xmult = 3, odds = 6 } },
+	rarity = 1,
+	atlas = 'SCPSN_Jokers_Common',
+	pos = { x = 2, y = 3 },
+	cost = 5,
+	pools = {["scpsn_addition"] = true}, -- Add the Card to this mods pool :)
+	-- Gros Michel is incompatible with the eternal sticker, so this makes sure it can't be eternal.
+	eternal_compat = false,
+	blueprint_compat = true,
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.mult, card.ability.extra.Xmult, (G.GAME.probabilities.normal or 1), card.ability.extra.odds } }
+	end,
+	calculate = function(self, card, context)
+		if context.joker_main then
+			return {
+				mult_mod = card.ability.extra.mult,
+				Xmult_mod = card.ability.extra.Xmult,
+				message = localize { type = 'variable', key = 'a_mult', vars = { card.ability.extra.mult } }
+			}
+		end
+
+		-- Checks to see if it's end of round, and if context.game_over is false.
+		-- Also, not context.repetition ensures it doesn't get called during repetitions.
+		if context.end_of_round and not context.repetition and context.game_over == false and not context.blueprint then
+			-- Another pseudorandom thing, randomly generates a decimal between 0 and 1, so effectively a random percentage.
+			if pseudorandom('ps_tickingbomb') < G.GAME.probabilities.normal / card.ability.extra.odds then
+				-- This part plays the animation.
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						play_sound('tarot1')
+						card.T.r = -0.2
+						card:juice_up(0.3, 0.4)
+						card.states.drag.is = true
+						card.children.center.pinch.x = true
+						G.STATE = G.STATES.GAME_OVER
+						G.STATE_COMPLETE = false
+						-- This part destroys the card.
+						G.E_MANAGER:add_event(Event({
+							trigger = 'after',
+							delay = 0.3,
+							blockable = false,
+							func = function()
+								card:remove()
+								card = nil
+								return true;
+							end
+						}))
+						return true
+					end
+				}))
+
+				return {
+					message = 'Exploded!'
+				}
+			else
+				return {
+					message = 'Safe!'
+				}
+			end
+		end
+	end
+}
+
+-- The House
+SMODS.Joker {
+	key = 'thehouse',
+	loc_txt = {
+		name = 'The House Always Wins',
+		text = {
+			"Earn {C:money}$#1#{} at",
+			"at end of round. {C:green}#2# in #3#{} chance to",
+			"lose {C:money}$25 {}"
+		}
+	},
+	config = { extra = { money = 8, odds = 3 }, },
+	rarity = 1,
+	atlas = 'SCPSN_Jokers_Common',
+	pos = { x = 0, y = 4 },
+	cost = 6,
+	pools = {["scpsn_addition"] = true}, -- Add the Card to this mods pool :)
+	loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.money, (G.GAME.probabilities.normal or 1), card.ability.extra.odds} }
+	end,
+	-- SMODS specific function, gives the returned value in dollars at the end of round, double checks that it's greater than 0 before returning.	
+	calc_dollar_bonus = function(self, card)
+		if pseudorandom('thehouse') < G.GAME.probabilities.normal / card.ability.extra.odds then
+			local bonus = -25
+			if bonus then return bonus end
+		else
+			local bonus = 8
+			return bonus end
+			
+	-- Since there's nothing else to calculate, a calculate function is completely unnecessary.
+	end
+
+}
+
+-- :steamhappy:
+SMODS.Joker {
+	key = 'steamhappy',
+	loc_txt = {
+		name = ':steamhappy:',
+		text = {
+			--[[
+			- The #1# is a variable that's stored in config, and is put into 'loc_vars'.
+
+			FORMATTING:
+			{C:} -> Color ... Options: mult (red), chips (blue), money (yellow), inactive (dull gray), red (discards), attention (bright orange), dark_edition (negative), green (green)
+			{X:} -> Background color, usually used for XMult
+			{s:} -> Scale, multiplies the text size by the value, like 0.8
+			{V:} -> Variable, allows for a variable to dynamically change the color, like in Castle joker.
+
+			You can put in {} to RESET all formatting, similar to HTMLS "</color>".
+			#1# = Variable #1 (in the Config section), #2# = Variable #2, etc.
+
+			Example:
+			{C:mult}+#1# {} Mult  ->  +4 Mult
+			]]
+
+			"You Win!"
+		}
+	},
+
+	-- Establish variables here in a list like fashion. Use this always even if the joker doesn't change any variable.
+	-- Example (Vanilla Joker): "config = { extra = { mult = 4 } }"
+	-- Example (Vanilla Runner): "config = { extra = { chips = 0, chip_gain = 15 } },"
+	config = { extra = { Xmult = 100, odds = 25 } },
+
+	
+	-- Misc Options:
+	atlas = 'SCPSN_Jokers_Common',
+	pos = { x = 1, y = 4 },		-- This card's position on the atlas, starting at {x=0,y=0} for the very top left.
+
+	rarity = 1, -- 1 common, 2 uncommon, 3 rare, 4 legendary.
+
+	blueprint_compat = false,	-- Whether it can be copied by blueprint or other jokers.
+	perishable_compat = true,	-- Whether it can have the perishable sticker on it.
+
+	unlocked = true,			-- Whether this joker is unlocked by default or not.
+	cost = 3,					-- Cost of card in shop.
+	pools = {["scpsn_addition"] = true}, -- Add the Card to this mods pool :)
+
+
+	-- Not 100% Sure what this does at all.
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.Xmult } }
+	end,
+
+	-- The Jokers Function.
+    calculate = function(self, card, context)
+
+		-- Contexts are basically when the Joker chooses to do a thing.
+		-- To find contexts, look at Here: https://raw.githubusercontent.com/nh6574/VanillaRemade/refs/heads/main/src/jokers.lua
+        if context.joker_main then
+			if pseudorandom('ps_steamhappy') < G.GAME.probabilities.normal / card.ability.extra.odds then
+				return {
+					Xmult = card.ability.extra.Xmult
+				}
+			end
+        end
+    end
+}
+
+-- SERE KIT
+SMODS.Joker {
+	key = 'SERE_KIT',
+	loc_txt = {
+		name = 'SERE KIT',
+		text = {
+			--[[
+			- The #1# is a variable that's stored in config, and is put into 'loc_vars'.
+
+			FORMATTING:
+			{C:} -> Color ... Options: mult (red), chips (blue), money (yellow), inactive (dull gray), red (discards), attention (bright orange), dark_edition (negative), green (green)
+			{X:} -> Background color, usually used for XMult
+			{s:} -> Scale, multiplies the text size by the value, like 0.8
+			{V:} -> Variable, allows for a variable to dynamically change the color, like in Castle joker.
+
+			You can put in {} to RESET all formatting, similar to HTMLS "</color>".
+			#1# = Variable #1 (in the Config section), #2# = Variable #2, etc.
+
+			Example:
+			{C:mult}+#1# {} Mult  ->  +4 Mult
+			]]
+
+			"When sold, gain {C:chips}+#1#{} Hands"
+		}
+	},
+
+	-- Establish variables here in a list like fashion. Use this always even if the joker doesn't change any variable.
+	-- Example (Vanilla Joker): "config = { extra = { mult = 4 } }"
+	-- Example (Vanilla Runner): "config = { extra = { chips = 0, chip_gain = 15 } },"
+	config = { extra = { extrahands = 2 } },
+
+	
+	-- Misc Options:
+	atlas = 'SCPSN_Jokers_Common',		-- Atlas ID (Set at the top of the file)
+	pos = { x = 2, y = 4 },		-- This card's position on the atlas, starting at {x=0,y=0} for the very top left.
+
+	rarity = 1,					-- 1 common, 2 uncommon, 3 rare, 4 legendary.
+	blueprint_compat = true,	-- Whether it can be copied by blueprint or other jokers.
+	perishable_compat = true,	-- Whether it can have the perishable sticker on it.
+
+	unlocked = true,			-- Whether this joker is unlocked by default or not.
+	cost = 4,					-- Cost of card in shop.
+	pools = {["scpsn_addition"] = true}, -- Add the Card to this mods pool :)
+
+
+	-- Not 100% Sure what this does at all.
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.extrahands } }
+	end,
+
+	-- The Jokers Function.
+    calculate = function(self, card, context)
+
+		-- Contexts are basically when the Joker chooses to do a thing.
+		-- To find contexts, look at Here: https://raw.githubusercontent.com/nh6574/VanillaRemade/refs/heads/main/src/jokers.lua
+
+        if context.selling_self then
+			ease_hands_played(card.ability.extra.extrahands, true)
+		end
+    end
+}
+
+-- The Blue Gentleman
+SMODS.Joker {
+	key = 'blue_gentleman',
+	loc_txt = {
+		name = 'Blue Gentleman',
+		text = {
+			--[[
+			- The #1# is a variable that's stored in config, and is put into 'loc_vars'.
+
+			FORMATTING:
+			{C:} -> Color ... Options: mult (red), chips (blue), money (yellow), inactive (dull gray), red (discards), attention (bright orange), dark_edition (negative), green (green)
+			{X:} -> Background color, usually used for XMult
+			{s:} -> Scale, multiplies the text size by the value, like 0.8
+			{V:} -> Variable, allows for a variable to dynamically change the color, like in Castle joker.
+
+			You can put in {} to RESET all formatting, similar to HTMLS "</color>".
+			#1# = Variable #1 (in the Config section), #2# = Variable #2, etc.
+
+			Example:
+			{C:mult}+#1# {} Mult  ->  +4 Mult
+			]]
+			
+			"{X:chips,C:white}X#1#{} Chips",
+
+		}
+	},
+
+	-- Establish variables here in a list like fashion. Use this always even if the joker doesn't change any variable.
+	-- Example (Vanilla Joker): "config = { extra = { mult = 4 } }"
+	-- Example (Vanilla Runner): "config = { extra = { chips = 0, chip_gain = 15 } },"
+	config = { extra = { xchips = 1.5} },
+
+	
+	-- Misc Options:
+	atlas = 'SCPSN_Jokers_Common',
+	pos = { x = 0, y = 5},
+	rarity = 1,					-- 1 common, 2 uncommon, 3 rare, 4 legendary.
+	blueprint_compat = true,	-- Whether it can be copied by blueprint or other jokers.
+	perishable_compat = true,	-- Whether it can have the perishable sticker on it.
+
+	unlocked = true,			-- Whether this joker is unlocked by default or not.
+	cost = 5,					-- Cost of card in shop.
+	pools = {["scpsn_addition"] = true}, -- Add the Card to this mods pool :)
+
+
+	-- Not 100% Sure what this does at all.
+	loc_vars = function(self, info_queue, card)
+		return {
+			vars = {
+				card.ability.extra.xchips,
+			}
+		}
+	end,
+
+	-- The Jokers Function.
+    calculate = function(self, card, context)
+
+		-- Contexts are basically when the Joker chooses to do a thing.
+		-- To find contexts, look at Here: https://raw.githubusercontent.com/nh6574/VanillaRemade/refs/heads/main/src/jokers.lua
+        if context.joker_main then
+            return {
+                xchips = card.ability.extra.xchips
+            }
+        end
+    end
+}
+
 ----------------------------------------------------------
 ----------- MOD CODE END -----------------------=---------
