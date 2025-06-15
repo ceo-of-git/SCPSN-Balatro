@@ -27,26 +27,6 @@ SMODS.ObjectType({
 	end,
 })
 
-
--- CREDITS
--- Code also stolen from yahimod because i am a LEECH
-local creditspage = {
-        "Yahiamice",
-        "(mod author, 99% of the work)",
-		"",
-        "Lisnovski, Blake Andrews, violxiv",
-        "Art assets",
-		"",
-		"Nova_422, Sciman101",
-        "Code contributions",
-		"",
-		"meganeko",
-        "Cybergrind soundtrack",
-		"",
-        "HexaCryonic, Burssty",
-        "Playtesting",
-    }
-
 SMODS.current_mod.extra_tabs = function() --Credits tab
     local scale = 0.5
     return {
