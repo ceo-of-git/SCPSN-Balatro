@@ -620,6 +620,7 @@ SMODS.Joker {
 					leEpicCounter = leEpicCounter + 10  -- Jack
 				end
 				
+				-- yandere dev
 				if playing_card:get_id() ~= not 11 then
 					if playing_card:get_id() ~= 12 then
 						if playing_card:get_id() ~= 13 then
@@ -708,6 +709,7 @@ SMODS.Joker {
 }
 
 -- Hoarders Trinket
+-- Coded by TheMaster
 SMODS.Joker {
     key = "fueltrinket",
 		loc_txt = {
@@ -738,6 +740,7 @@ SMODS.Joker {
 }
 
 -- Chudjoker
+-- Coded by TheMaster
 SMODS.Joker {
     key = "chudjoker",
 	loc_txt = {
@@ -772,6 +775,7 @@ SMODS.Joker {
 
 -- Starman
 -- TODO: i dont feel like it rn but re-do the art for this lol......
+-- Coded by TheMaster
 SMODS.Joker {
     key = "Starman",
 		loc_txt = {
@@ -809,6 +813,7 @@ SMODS.Joker {
 }
 
 -- Really Fragile joker
+-- Coded by TheMaster
 SMODS.Joker {
 	key = 'fragilejoker',
 	loc_txt = {

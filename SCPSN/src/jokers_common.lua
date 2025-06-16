@@ -485,6 +485,7 @@ SMODS.Joker {
 
 -- The Cartel
 function calculate_purity_levels()
+	-- I think this is unused but im too scared to remove the code for this.
     local count = 0
     for _, card in ipairs(G.playing_cards) do
 		if SMODS.has_enhancement(card, 'm_scpsn_pure') then
@@ -846,6 +847,7 @@ SMODS.Joker {
 }
 
 -- Ticking Time Bomb
+-- Coded by TheMaster
 SMODS.Joker {
 	key = 'ticking_bomb',
 	loc_txt = {
@@ -923,6 +925,7 @@ SMODS.Joker {
 }
 
 -- The House
+-- Coded by TheMaster
 SMODS.Joker {
 	key = 'thehouse',
 	loc_txt = {
@@ -957,6 +960,7 @@ SMODS.Joker {
 }
 
 -- :steamhappy:
+-- Coded by TheMaster
 SMODS.Joker {
 	key = 'steamhappy',
 	loc_txt = {

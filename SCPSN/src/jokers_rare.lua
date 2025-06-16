@@ -96,7 +96,6 @@ SMODS.Joker {
 	end
 }
 
-
 -- The Bossfight (Tower)
 SMODS.Joker {
 	key = 'markiplier_bossfight',
@@ -271,6 +270,7 @@ SMODS.Joker {
 }
 
 -- Reroll Trinket
+-- Coded by TheMaster
 SMODS.Joker {
     key = "reroll",
 		loc_txt = {
@@ -320,7 +320,8 @@ SMODS.Joker {
     end
 }
 
--- Cryptid Six Fingers Copy!!!!!!!
+-- Six Fingers but Cool
+-- Coded by TheMaster
 SMODS.Joker {
     key = "sixfingers_but_cool",
 	loc_txt = {
