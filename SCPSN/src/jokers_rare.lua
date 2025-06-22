@@ -19,6 +19,8 @@ SMODS.Atlas {
 	py = 95
 }
 
+
+
 -- Truck that Can't Slow Down!
 SMODS.Sound({key = "insurance_fraud", path = "insurance_fraud.ogg",})
 SMODS.Joker {
@@ -347,6 +349,230 @@ SMODS.Joker {
 		SMODS.change_play_limit(-1)
     end
 }
+
+-- When im in a rerolling competition
+SMODS.Atlas {
+	key = "SCPSN_Jokers_RerollingCompetition",
+	path = "Rerolling_Competition.png",
+	frames = 14,
+	px = 71,
+	py = 95
+}
+SMODS.Joker {
+    key = "rerolling_competition",
+	loc_txt = {
+		name = 'When Im in a Rerolling Competition',
+		text = {
+			"{C:green}+#1#{} Jokers in Shop",
+		}
+	},
+
+    blueprint_compat = false,
+    rarity = 3,
+    cost = 10,
+	atlas = 'SCPSN_Jokers_RerollingCompetition',
+
+	pixel_size = { w = 71 , h = 95 },
+	animated = true,
+    frame = 0,
+
+	config = { extra = { shop_slots = 3, }, },
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.shop_slots } }
+    end,
+
+	pos = { x = 0, y = 0 },
+
+    add_to_deck = function(self, card, from_debuff)
+		change_shop_size(2)
+
+		card.children.center:set_sprite_pos({x = 0, y = 0})
+		card.ability.extra.animated = true
+    end,
+
+    remove_from_deck = function(self, card, from_debuff)
+        change_shop_size(-2)
+		card.ability.extra.animated = nil
+	end,
+
+	update = function(self, card, context)
+		if not card.ability.extra.animated then return end
+
+		local total_frames = 14
+		local frame_width = 71
+
+		local timer = math.floor(G.TIMERS.REAL * 12)  -- adjust speed multiplier (e.g., 10 is fast)
+		local frame_index = (timer % total_frames)
+
+		-- Set sprite to the corresponding frame (frame_index * width)
+		card.children.center:set_sprite_pos({x = frame_index, y = 0})
+	end,
+
+	calculate = function(self, card, context)
+		if context.reroll_shop then
+			play_sound('scpsn_heat_pulse_break', nil, 0.5) -- Established in the Snowflake boss blind :)
+		end
+	end
+}
+
+-- Depth Printception
+SMODS.Joker {
+	key = 'depth_printception',
+	loc_txt = {
+		name = 'Depth Printception',
+		text = {
+			--[[
+			- The #1# is a variable that's stored in config, and is put into 'loc_vars'.
+
+			FORMATTING:
+			{C:} -> Color ... Options: mult (red), chips (blue), money (yellow), inactive (dull gray), red (discards), attention (bright orange), dark_edition (negative), green (green)
+			{X:} -> Background color, usually used for XMult
+			{s:} -> Scale, multiplies the text size by the value, like 0.8
+			{V:} -> Variable, allows for a variable to dynamically change the color, like in Castle joker.
+
+			You can put in {} to RESET all formatting, similar to HTMLS "</color>".
+			#1# = Variable #1 (in the Config section), #2# = Variable #2, etc.
+
+			Example:
+			{C:mult}+#1# {} Mult  ->  +4 Mult
+			]]
+			
+			"{C:green}#1# in #2# Chance{} to copy the",
+			"effects of the joker directly to the right.",
+			"Otherwise, Copy the effects of ",
+			"the Joker {C:attention}2{} slots to the right."
+
+		}
+	},
+
+	-- Establish variables here in a list like fashion. Use this always even if the joker doesn't change any variable.
+	-- Example (Vanilla Joker): "config = { extra = { mult = 4 } }"
+	-- Example (Vanilla Runner): "config = { extra = { chips = 0, chip_gain = 15 } },"
+	config = { extra = { odds = 2 } },
+
+	
+	-- Misc Options:
+	atlas = 'SCPSN_Jokers_Rare',
+	pos = { x = 0, y = 2 },
+	rarity = 3,					-- 1 common, 2 uncommon, 3 rare, 4 legendary.
+	blueprint_compat = false,	-- Whether it can be copied by blueprint or other jokers.
+	perishable_compat = true,	-- Whether it can have the perishable sticker on it.
+
+	unlocked = true,			-- Whether this joker is unlocked by default or not.
+	cost = 10,					-- Cost of card in shop.
+	pools = {["scpsn_addition"] = true},
+
+	loc_vars = function(self, info_queue, card)
+		return { vars = { (G.GAME.probabilities.normal or 1), card.ability.extra.odds } }
+	end,
+
+    calculate = function(self, card, context)
+        local other_joker = nil
+		local other_other_joker = nil
+        for i = 1, #G.jokers.cards do
+            if G.jokers.cards[i] == card then other_joker = G.jokers.cards[i + 1] end
+			if G.jokers.cards[i] == card then other_other_joker = G.jokers.cards[i + 2] end
+        end
+
+		if pseudorandom('ps_depthprintception') < G.GAME.probabilities.normal / card.ability.extra.odds then
+			return SMODS.blueprint_effect(card, other_joker, context)
+		else
+			return SMODS.blueprint_effect(card, other_other_joker, context)
+		end
+    end
+}
+
+-- Jolly Fellow
+-- Idea heavily inspired from @mindaso.'s suggestion on Discord!!!
+SMODS.Joker {
+	key = 'jolly_fellow',
+	loc_txt = {
+		name = 'Jolly Fellow',
+		text = {
+			--[[
+			- The #1# is a variable that's stored in config, and is put into 'loc_vars'.
+
+			FORMATTING:
+			{C:} -> Color ... Options: mult (red), chips (blue), money (yellow), inactive (dull gray), red (discards), attention (bright orange), dark_edition (negative), green (green)
+			{X:} -> Background color, usually used for XMult
+			{s:} -> Scale, multiplies the text size by the value, like 0.8
+			{V:} -> Variable, allows for a variable to dynamically change the color, like in Castle joker.
+
+			You can put in {} to RESET all formatting, similar to HTMLS "</color>".
+			#1# = Variable #1 (in the Config section), #2# = Variable #2, etc.
+
+			Example:
+			{C:mult}+#1# {} Mult  ->  +4 Mult
+			]]
+			
+			"{C:green}#1# in #2# Chance{} to steal a",
+			"played card {C:inactive,s:0.8,E:1}(destroy it){} and gain {X:mult,C:white}+#3#X{} Mult.",
+			"Resets if no cards are stolen",
+			"{C:inactive}(Currently{} {X:mult,C:white}#4#X{} {C:inactive}){}",
+
+		}
+	},
+
+	-- Establish variables here in a list like fashion. Use this always even if the joker doesn't change any variable.
+	-- Example (Vanilla Joker): "config = { extra = { mult = 4 } }"
+	-- Example (Vanilla Runner): "config = { extra = { chips = 0, chip_gain = 15 } },"
+	config = { extra = { odds = 3, xmult = 1.0, mult_mod = 0.4 } },
+
+	
+	-- Misc Options:
+	atlas = 'SCPSN_Jokers_Rare',
+	pos = { x = 1, y = 2 },
+	rarity = 3,					-- 1 common, 2 uncommon, 3 rare, 4 legendary.
+	blueprint_compat = false,	-- Whether it can be copied by blueprint or other jokers.
+	perishable_compat = true,	-- Whether it can have the perishable sticker on it.
+
+	unlocked = true,			-- Whether this joker is unlocked by default or not.
+	cost = 12,					-- Cost of card in shop.
+	pools = {["scpsn_addition"] = true},
+
+	loc_vars = function(self, info_queue, card)
+		return { vars = { (G.GAME.probabilities.normal or 1), card.ability.extra.odds, card.ability.extra.mult_mod, card.ability.extra.xmult } }
+	end,
+
+    calculate = function(self, card, context)
+		local destroyed_cards = 0
+
+        if context.before and context.main_eval and not context.blueprint then
+			for _, scored_card in ipairs(context.scoring_hand) do
+				if pseudorandom('ps_jollyfellow') < G.GAME.probabilities.normal / card.ability.extra.odds then
+					card.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.mult_mod
+					destroyed_cards = 1 -- Literally anything but 0 would work here.
+
+					G.E_MANAGER:add_event(Event({
+						func = function()
+							card:juice_up(0.8, 0.8)
+							scored_card:start_dissolve({ HEX("fc0303") }, nil, 1.6)
+							SMODS.destroy_cards(scored_card)
+							return { message = "yoink" }
+						end
+					}))
+				end
+			end
+
+			if destroyed_cards == 0 then
+				card.ability.extra.xmult = 1.0 -- Reset
+				return {
+					message = "OOOOOOH NOOO!!! IM SO SAD!!!"
+				}
+			end
+
+			destroyed_cards = 0
+        end
+
+		if context.joker_main then
+			return {
+				message = "Joyful!",
+				xmult = card.ability.extra.xmult
+			}
+		end
+    end
+}
+
 
 ----------------------------------------------------------
 ----------- MOD CODE END -----------------------=---------

@@ -5,18 +5,20 @@ assert(SMODS.load_file("src/jokers_common.lua"))()
 assert(SMODS.load_file("src/jokers_uncommon.lua"))()
 assert(SMODS.load_file("src/jokers_rare.lua"))()
 assert(SMODS.load_file("src/jokers_legendary.lua"))()
---assert(SMODS.load_file("src/backs.lua"))()
---assert(SMODS.load_file("src/seals.lua"))()
---assert(SMODS.load_file("src/vouchers.lua"))()
 assert(SMODS.load_file("src/bosses.lua"))()
 assert(SMODS.load_file("src/enhancements.lua"))()
 assert(SMODS.load_file("src/tarots.lua"))()
 assert(SMODS.load_file("src/booster_packs.lua"))()
+--assert(SMODS.load_file("src/backs.lua"))()
+--assert(SMODS.load_file("src/seals.lua"))()
+--assert(SMODS.load_file("src/vouchers.lua"))()
 --assert(SMODS.load_file("src/editions.lua"))()
 --assert(SMODS.load_file("src/spectrals.lua"))()
 
+if SMODS.find_mod('partners') then assert(SMODS.load_file("src/partner_compat.lua"))() end -- Optional Partners Dependency
 
--- SCPSN Joker Pool
+
+-- SCPSN Joker Pool(s)
 -- Code taken from Yahimod
 SMODS.ObjectType({
 	key = "scpsn_addition",
@@ -26,8 +28,32 @@ SMODS.ObjectType({
 		SMODS.ObjectType.inject(self)
 	end,
 })
+SMODS.ObjectType({
+	key = "tower_card",
+	default = "j_reserved_parking",
+	cards = {},
+	inject = function(self)
+		SMODS.ObjectType.inject(self)
+	end,
+})
 
-SMODS.current_mod.extra_tabs = function() --Credits tab
+--Load Localization file
+assert(SMODS.load_file("localization/en-us.lua"))()
+--[[
+local files = NFS.getDirectoryItems(SMODS.current_mod.path .. "localization")
+for _, file in ipairs(files) do
+	local f, err = SMODS.load_file("localization/" .. file)
+	if err then
+		error(err) 
+	end
+	f()
+end
+]]--
+
+
+
+-- Credits Page
+SMODS.current_mod.extra_tabs = function()
     local scale = 0.5
     return {
         label = "Credits",
@@ -135,6 +161,8 @@ SMODS.current_mod.extra_tabs = function() --Credits tab
         end
     }
 end
+
+
 
 ----------------------------------------------
 ------------MOD CODE END----------------------

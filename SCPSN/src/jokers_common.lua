@@ -19,6 +19,7 @@ SMODS.Atlas {
 	py = 95
 }
 
+print(SMODS.mods)
 
 -- Mad Gambler
 SMODS.Joker {
@@ -60,6 +61,7 @@ SMODS.Joker {
 	rarity = 1,					-- 1 common, 2 uncommon, 3 rare, 4 legendary.
 	blueprint_compat = true,	-- Whether it can be copied by blueprint or other jokers.
 	perishable_compat = true,	-- Whether it can have the perishable sticker on it.
+	eternal_compat = true,		-- Whether it can have the eternal sticker on it.
 
 	unlocked = true,			-- Whether this joker is unlocked by default or not.
 	cost = 3,					-- Cost of card in shop.
@@ -126,6 +128,7 @@ SMODS.Joker {
 	rarity = 1,					-- 1 common, 2 uncommon, 3 rare, 4 legendary.
 	blueprint_compat = true,	-- Whether it can be copied by blueprint or other jokers.
 	perishable_compat = true,	-- Whether it can have the perishable sticker on it.
+	eternal_compat = true,		-- Whether it can have the eternal sticker on it.
 
 	unlocked = true,			-- Whether this joker is unlocked by default or not.
 	cost = 5,					-- Cost of card in shop.
@@ -204,6 +207,7 @@ SMODS.Joker {
 	rarity = 1,					-- 1 common, 2 uncommon, 3 rare, 4 legendary.
 	blueprint_compat = true,	-- Whether it can be copied by blueprint or other jokers.
 	perishable_compat = true,	-- Whether it can have the perishable sticker on it.
+	eternal_compat = true,		-- Whether it can have the eternal sticker on it.
 
 	unlocked = true,			-- Whether this joker is unlocked by default or not.
 	cost = 4,					-- Cost of card in shop.
@@ -282,6 +286,7 @@ SMODS.Joker {
 	rarity = 1,					-- 1 common, 2 uncommon, 3 rare, 4 legendary.
 	blueprint_compat = true,	-- Whether it can be copied by blueprint or other jokers.
 	perishable_compat = true,	-- Whether it can have the perishable sticker on it.
+	eternal_compat = true,		-- Whether it can have the eternal sticker on it.
 
 	unlocked = true,			-- Whether this joker is unlocked by default or not.
 	cost = 6,					-- Cost of card in shop.
@@ -364,6 +369,7 @@ SMODS.Joker {
 	rarity = 1,					-- 1 common, 2 uncommon, 3 rare, 4 legendary.
 	blueprint_compat = true,	-- Whether it can be copied by blueprint or other jokers.
 	perishable_compat = true,	-- Whether it can have the perishable sticker on it.
+	eternal_compat = true,		-- Whether it can have the eternal sticker on it.
 
 	unlocked = true,			-- Whether this joker is unlocked by default or not.
 	cost = 5,					-- Cost of card in shop.
@@ -452,6 +458,7 @@ SMODS.Joker {
 	rarity = 1,					-- 1 common, 2 uncommon, 3 rare, 4 legendary.
 	blueprint_compat = true,	-- Whether it can be copied by blueprint or other jokers.
 	perishable_compat = true,	-- Whether it can have the perishable sticker on it.
+	eternal_compat = true,		-- Whether it can have the eternal sticker on it.
 
 	unlocked = true,			-- Whether this joker is unlocked by default or not.
 	cost = 5,					-- Cost of card in shop.
@@ -539,6 +546,7 @@ SMODS.Joker {
 	rarity = 1,					-- 1 common, 2 uncommon, 3 rare, 4 legendary.
 	blueprint_compat = true,	-- Whether it can be copied by blueprint or other jokers.
 	perishable_compat = true,	-- Whether it can have the perishable sticker on it.
+	eternal_compat = true,		-- Whether it can have the eternal sticker on it.
 
 	unlocked = true,			-- Whether this joker is unlocked by default or not.
 	cost = 6,					-- Cost of card in shop.
@@ -607,6 +615,7 @@ SMODS.Joker {
 	rarity = 1,					-- 1 common, 2 uncommon, 3 rare, 4 legendary.
 	blueprint_compat = true,	-- Whether it can be copied by blueprint or other jokers.
 	perishable_compat = true,	-- Whether it can have the perishable sticker on it.
+	eternal_compat = true,		-- Whether it can have the eternal sticker on it.
 
 	unlocked = true,			-- Whether this joker is unlocked by default or not.
 	cost = 6,					-- Cost of card in shop.
@@ -674,6 +683,7 @@ SMODS.Joker {
 	rarity = 1,					-- 1 common, 2 uncommon, 3 rare, 4 legendary.
 	blueprint_compat = true,	-- Whether it can be copied by blueprint or other jokers.
 	perishable_compat = true,	-- Whether it can have the perishable sticker on it.
+	eternal_compat = true,		-- Whether it can have the eternal sticker on it.
 
 	unlocked = true,			-- Whether this joker is unlocked by default or not.
 	cost = 5,					-- Cost of card in shop.
@@ -749,6 +759,7 @@ SMODS.Joker {
 	rarity = 1,					-- 1 common, 2 uncommon, 3 rare, 4 legendary.
 	blueprint_compat = true,	-- Whether it can be copied by blueprint or other jokers.
 	perishable_compat = true,	-- Whether it can have the perishable sticker on it.
+	eternal_compat = true,		-- Whether it can have the eternal sticker on it.
 
 	unlocked = true,			-- Whether this joker is unlocked by default or not.
 	cost = 6,					-- Cost of card in shop.
@@ -821,6 +832,7 @@ SMODS.Joker {
 	rarity = 1,					-- 1 common, 2 uncommon, 3 rare, 4 legendary.
 	blueprint_compat = true,	-- Whether it can be copied by blueprint or other jokers.
 	perishable_compat = true,	-- Whether it can have the perishable sticker on it.
+	eternal_compat = true,		-- Whether it can have the eternal sticker on it.
 
 	unlocked = true,			-- Whether this joker is unlocked by default or not.
 	cost = 2,					-- Cost of card in shop.
@@ -853,8 +865,8 @@ SMODS.Joker {
 	loc_txt = {
 		name = 'Ticking Time Bomb',
 		text = {
-			"{C:mult}+35{} Mult",
-			"{X:mult,C:white} X3 {} Mult",
+			"{C:mult}+#1#{} Mult",
+			"{X:mult,C:white} X#2# {} Mult",
 
 			"{C:green}#3# in #4#{} chance this",
 			"bomb explodes and you lose",
@@ -933,25 +945,26 @@ SMODS.Joker {
 		text = {
 			"Earn {C:money}$#1#{} at",
 			"at end of round. {C:green}#2# in #3#{} chance to",
-			"lose {C:money}$25 {}"
+			"lose {C:money}$#4# {}",
+			"{C:inactive,E:1,s:0.8}Perhaps you just need more mousebites{}"
 		}
 	},
-	config = { extra = { money = 8, odds = 3 }, },
+	config = { extra = { money = 8, odds = 3, lol_ur_in_debt_now = 25, }, },
 	rarity = 1,
 	atlas = 'SCPSN_Jokers_Common',
 	pos = { x = 0, y = 4 },
 	cost = 6,
 	pools = {["scpsn_addition"] = true}, -- Add the Card to this mods pool :)
 	loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.money, (G.GAME.probabilities.normal or 1), card.ability.extra.odds} }
+        return { vars = { card.ability.extra.money, (G.GAME.probabilities.normal or 1), card.ability.extra.odds, card.ability.extra.lol_ur_in_debt_now} }
 	end,
 	-- SMODS specific function, gives the returned value in dollars at the end of round, double checks that it's greater than 0 before returning.	
 	calc_dollar_bonus = function(self, card)
 		if pseudorandom('thehouse') < G.GAME.probabilities.normal / card.ability.extra.odds then
-			local bonus = -25
+			local bonus = -card.ability.extra.lol_ur_in_debt_now
 			if bonus then return bonus end
 		else
-			local bonus = 8
+			local bonus = card.ability.extra.money
 			return bonus end
 			
 	-- Since there's nothing else to calculate, a calculate function is completely unnecessary.
@@ -1000,6 +1013,7 @@ SMODS.Joker {
 
 	blueprint_compat = false,	-- Whether it can be copied by blueprint or other jokers.
 	perishable_compat = true,	-- Whether it can have the perishable sticker on it.
+	eternal_compat = true,		-- Whether it can have the eternal sticker on it.
 
 	unlocked = true,			-- Whether this joker is unlocked by default or not.
 	cost = 3,					-- Cost of card in shop.
@@ -1065,6 +1079,7 @@ SMODS.Joker {
 	rarity = 1,					-- 1 common, 2 uncommon, 3 rare, 4 legendary.
 	blueprint_compat = true,	-- Whether it can be copied by blueprint or other jokers.
 	perishable_compat = true,	-- Whether it can have the perishable sticker on it.
+	eternal_compat = false,		-- Whether it can have the eternal sticker on it.
 
 	unlocked = true,			-- Whether this joker is unlocked by default or not.
 	cost = 4,					-- Cost of card in shop.
@@ -1127,6 +1142,7 @@ SMODS.Joker {
 	rarity = 1,					-- 1 common, 2 uncommon, 3 rare, 4 legendary.
 	blueprint_compat = true,	-- Whether it can be copied by blueprint or other jokers.
 	perishable_compat = true,	-- Whether it can have the perishable sticker on it.
+	eternal_compat = true,		-- Whether it can have the eternal sticker on it.
 
 	unlocked = true,			-- Whether this joker is unlocked by default or not.
 	cost = 5,					-- Cost of card in shop.
@@ -1151,6 +1167,191 @@ SMODS.Joker {
             return {
                 xchips = card.ability.extra.xchips
             }
+        end
+    end
+}
+
+-- Evil Brian
+SMODS.Joker {
+	key = 'evilbrian',
+	loc_txt = {
+		name = 'evil brian',
+		text = {
+			--[[
+			- The #1# is a variable that's stored in config, and is put into 'loc_vars'.
+
+			FORMATTING:
+			{C:} -> Color ... Options: mult (red), chips (blue), money (yellow), inactive (dull gray), red (discards), attention (bright orange), dark_edition (negative), green (green)
+			{X:} -> Background color, usually used for XMult
+			{s:} -> Scale, multiplies the text size by the value, like 0.8
+			{V:} -> Variable, allows for a variable to dynamically change the color, like in Castle joker.
+
+			You can put in {} to RESET all formatting, similar to HTMLS "</color>".
+			#1# = Variable #1 (in the Config section), #2# = Variable #2, etc.
+
+			Example:
+			{C:mult}+#1# {} Mult  ->  +4 Mult
+			]]
+			
+			"{C:chips}+#1#{} Chips",
+			"{C:inactive}Gains{} {C:chips}+#2#{} {C:inactive}Chips whenever{}",
+			"{C:inactive}cards are destroyed.{}"
+
+		}
+	},
+
+	-- Establish variables here in a list like fashion. Use this always even if the joker doesn't change any variable.
+	-- Example (Vanilla Joker): "config = { extra = { mult = 4 } }"
+	-- Example (Vanilla Runner): "config = { extra = { chips = 0, chip_gain = 15 } },"
+	config = { extra = { chips = 0, chips_mod = 35} },
+
+	
+	-- Misc Options:
+	atlas = 'SCPSN_Jokers_Common',
+	pos = { x = 1, y = 5},
+	rarity = 1,					-- 1 common, 2 uncommon, 3 rare, 4 legendary.
+	blueprint_compat = true,	-- Whether it can be copied by blueprint or other jokers.
+	perishable_compat = true,	-- Whether it can have the perishable sticker on it.
+	eternal_compat = true,		-- Whether it can have the eternal sticker on it.
+
+	unlocked = true,			-- Whether this joker is unlocked by default or not.
+	cost = 4,					-- Cost of card in shop.
+	pools = {["scpsn_addition"] = true}, -- Add the Card to this mods pool :)
+
+
+	-- Not 100% Sure what this does at all.
+	loc_vars = function(self, info_queue, card)
+		return {
+			vars = {
+				card.ability.extra.chips,
+				card.ability.extra.chips_mod,
+			}
+		}
+	end,
+
+	-- The Jokers Function.
+    calculate = function(self, card, context)
+
+        if context.joker_main then
+            return {
+                chips = card.ability.extra.chips
+            }
+        end
+
+		if context.remove_playing_cards and not context.blueprint and not context.using_consumeable then
+			G.E_MANAGER:add_event(Event({
+				func = function()
+					play_sound('tarot1')
+
+					card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.chips_mod
+
+					return {
+						message = 'Upgraded!',
+					}
+
+				end
+			}))
+
+			return nil
+		end
+    end
+}
+
+-- Loader Bot
+SMODS.Joker {
+	key = 'loader_bot',
+	loc_txt = {
+		name = 'Loader Bot',
+		text = {
+			--[[
+			- The #1# is a variable that's stored in config, and is put into 'loc_vars'.
+
+			FORMATTING:
+			{C:} -> Color ... Options: mult (red), chips (blue), money (yellow), inactive (dull gray), red (discards), attention (bright orange), dark_edition (negative), green (green)
+			{X:} -> Background color, usually used for XMult
+			{s:} -> Scale, multiplies the text size by the value, like 0.8
+			{V:} -> Variable, allows for a variable to dynamically change the color, like in Castle joker.
+
+			You can put in {} to RESET all formatting, similar to HTMLS "</color>".
+			#1# = Variable #1 (in the Config section), #2# = Variable #2, etc.
+
+			Example:
+			{C:mult}+#1# {} Mult  ->  +4 Mult
+			]]
+			
+			"{C:green}#1# in #2#{} Chance to call in a",
+			"{X:chips,C:white}Cook{} or {X:planet,C:white}Companion{} tarot card",
+			"when {C:attention}Blind Selected{}, {C:inactive}(Must have Room){}"
+
+		}
+	},
+
+	-- Establish variables here in a list like fashion. Use this always even if the joker doesn't change any variable.
+	-- Example (Vanilla Joker): "config = { extra = { mult = 4 } }"
+	-- Example (Vanilla Runner): "config = { extra = { chips = 0, chip_gain = 15 } },"
+	config = { extra = { odds = 2 } },
+
+	
+	-- Misc Options:
+	atlas = 'SCPSN_Jokers_Common',
+	pos = { x = 2, y = 5},
+	rarity = 1,					-- 1 common, 2 uncommon, 3 rare, 4 legendary.
+	blueprint_compat = true,	-- Whether it can be copied by blueprint or other jokers.
+	perishable_compat = true,	-- Whether it can have the perishable sticker on it.
+	eternal_compat = true,		-- Whether it can have the eternal sticker on it.
+
+	unlocked = true,			-- Whether this joker is unlocked by default or not.
+	cost = 4,					-- Cost of card in shop.
+	pools = {["scpsn_addition"] = true}, -- Add the Card to this mods pool :)
+
+
+	-- Not 100% Sure what this does at all.
+	loc_vars = function(self, info_queue, card)
+		return { vars = { (G.GAME.probabilities.normal or 1), card.ability.extra.odds } }
+	end,
+
+	-- The Jokers Function.
+    calculate = function(self, card, context)
+        if context.setting_blind and #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
+			if pseudorandom('ps_loaderbot') < G.GAME.probabilities.normal / card.ability.extra.odds then
+				G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
+
+				if pseudorandom('ps_loaderbot_2') < 0.5 then
+					G.E_MANAGER:add_event(Event({
+						func = (function()
+							G.E_MANAGER:add_event(Event({
+								func = function()
+									local theCook = SMODS.create_card{key= "c_scpsn_tarot_methcook"}
+									G.consumeables:emplace(theCook)
+									G.GAME.consumeable_buffer = 0
+									return true
+								end
+							}))
+							SMODS.calculate_effect({ message = "Deployed!", colour = G.C.BLUE },
+								context.blueprint_card or card)
+							return true
+						end)
+					}))
+					return nil, true -- This is for Joker retrigger purposes
+				else
+					G.E_MANAGER:add_event(Event({
+						func = (function()
+							G.E_MANAGER:add_event(Event({
+								func = function()
+									local theCompanion = SMODS.create_card{key= "c_scpsn_tarot_methcompanion"}
+									G.consumeables:emplace(theCompanion)
+									G.GAME.consumeable_buffer = 0
+									return true
+								end
+							}))
+							SMODS.calculate_effect({ message = "Deployed!", colour = G.C.BLUE },
+								context.blueprint_card or card)
+							return true
+						end)
+					}))
+					return nil, true -- This is for Joker retrigger purposes
+				end
+			end
         end
     end
 }

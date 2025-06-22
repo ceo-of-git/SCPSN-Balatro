@@ -377,6 +377,52 @@ SMODS.Blind{
     end
 }
 
+-- Gilbert Facility
+SMODS.Blind{
+    name = "Gilbert Facility",
+    key = "gilbert_facility",
+
+    atlas_table = 'ANIMATION_ATLAS',
+    atlas = 'SCPSN_Blinds',
+    frames = 1,
+    pos = {x = 0, y = 5},
+    unlocked = true,
+
+    mult = 100,
+    dollars = 10,
+    boss = { min = 6, max = 39, false},
+    boss_colour = HEX('6e5939'),
+
+    loc_txt = {
+        name = "Gilbert Facility",
+        label = "Gilbert Facility",
+        text = {
+            "Find the Cure",
+            "(Play Straight Flush)",
+            "To Instantly Win."
+        }
+    },
+
+    set_blind = function(self)
+        ease_discard(3, true)
+        quirksEnabled = true
+    end,
+
+    disable = function(self)
+        quirksEnabled = false
+    end,
+
+    loc_vars = {
+        quirksEnabled = true,
+    },
+
+    calculate = function(self, card, context)
+        if context.before and next(context.poker_hands['Straight Flush']) then
+            G.GAME.blind.chips =  G.GAME.blind.chips * 0
+        end
+    end
+}
+
 
 
 
