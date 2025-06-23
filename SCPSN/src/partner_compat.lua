@@ -13,6 +13,8 @@ SMODS.Atlas {
 	py = 58
 }
 
+print("TEST")
+
 -- Special Ops Partner
 Partner_API.Partner{
     key = "special_ops",

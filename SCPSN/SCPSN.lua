@@ -9,14 +9,16 @@ assert(SMODS.load_file("src/bosses.lua"))()
 assert(SMODS.load_file("src/enhancements.lua"))()
 assert(SMODS.load_file("src/tarots.lua"))()
 assert(SMODS.load_file("src/booster_packs.lua"))()
---assert(SMODS.load_file("src/backs.lua"))()
+assert(SMODS.load_file("src/decks.lua"))()
 --assert(SMODS.load_file("src/seals.lua"))()
 --assert(SMODS.load_file("src/vouchers.lua"))()
 --assert(SMODS.load_file("src/editions.lua"))()
 --assert(SMODS.load_file("src/spectrals.lua"))()
 
-if SMODS.find_mod('partners') then assert(SMODS.load_file("src/partner_compat.lua"))() end -- Optional Partners Dependency
-
+if next(SMODS.find_mod('partner')) then -- Optional Partners Dependency
+    print("[SCPSN] Partner Compatability LOADING")
+    assert(SMODS.load_file("src/partner_compat.lua"))()
+end
 
 -- SCPSN Joker Pool(s)
 -- Code taken from Yahimod
@@ -37,18 +39,9 @@ SMODS.ObjectType({
 	end,
 })
 
---Load Localization file
+--Load Localization file(s maybe)
 assert(SMODS.load_file("localization/en-us.lua"))()
---[[
-local files = NFS.getDirectoryItems(SMODS.current_mod.path .. "localization")
-for _, file in ipairs(files) do
-	local f, err = SMODS.load_file("localization/" .. file)
-	if err then
-		error(err) 
-	end
-	f()
-end
-]]--
+
 
 
 

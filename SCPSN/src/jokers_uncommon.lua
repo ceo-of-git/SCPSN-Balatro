@@ -1386,7 +1386,7 @@ SMODS.Joker {
 	-- Establish variables here in a list like fashion. Use this always even if the joker doesn't change any variable.
 	-- Example (Vanilla Joker): "config = { extra = { mult = 4 } }"
 	-- Example (Vanilla Runner): "config = { extra = { chips = 0, chip_gain = 15 } },"
-	config = { extra = { xchips = 1.3 } },
+	config = { extra = { xchips = 1.5 } },
 
 	
 	-- Misc Options:
@@ -1460,7 +1460,7 @@ SMODS.Joker {
 	-- Establish variables here in a list like fashion. Use this always even if the joker doesn't change any variable.
 	-- Example (Vanilla Joker): "config = { extra = { mult = 4 } }"
 	-- Example (Vanilla Runner): "config = { extra = { chips = 0, chip_gain = 15 } },"
-	config = { extra = { xmult = 1.3 } },
+	config = { extra = { xmult = 1.5 } },
 
 	
 	-- Misc Options:
