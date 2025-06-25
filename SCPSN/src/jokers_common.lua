@@ -1356,5 +1356,73 @@ SMODS.Joker {
     end
 }
 
+-- So Guys, We Did it!
+SMODS.Sound({key = "so_guys_we_procced_it", path = "so_guys_we_did_it_proc.ogg",})
+SMODS.Joker {
+	key = 'so_guys_we_did_it',
+	loc_txt = {
+		name = 'So guys we did it',
+		text = {
+			--[[
+			- The #1# is a variable that's stored in config, and is put into 'loc_vars'.
+
+			FORMATTING:
+			{C:} -> Color ... Options: mult (red), chips (blue), money (yellow), inactive (dull gray), red (discards), attention (bright orange), dark_edition (negative), green (green)
+			{X:} -> Background color, usually used for XMult
+			{s:} -> Scale, multiplies the text size by the value, like 0.8
+			{V:} -> Variable, allows for a variable to dynamically change the color, like in Castle joker.
+
+			You can put in {} to RESET all formatting, similar to HTMLS "</color>".
+			#1# = Variable #1 (in the Config section), #2# = Variable #2, etc.
+
+			Example:
+			{C:mult}+#1# {} Mult  ->  +4 Mult
+			]]
+			
+			"After reaching a {C:attention}quarter of a million{}",
+			"required score, activate {X:mult,C:white}X#1#{} Mult",
+
+		}
+	},
+
+	-- Establish variables here in a list like fashion. Use this always even if the joker doesn't change any variable.
+	-- Example (Vanilla Joker): "config = { extra = { mult = 4 } }"
+	-- Example (Vanilla Runner): "config = { extra = { chips = 0, chip_gain = 15 } },"
+	config = { extra = { xmult = 12 } },
+
+	
+	-- Misc Options:
+	atlas = 'SCPSN_Jokers_Common',
+	pos = { x = 0, y = 6},
+	rarity = 1,					-- 1 common, 2 uncommon, 3 rare, 4 legendary.
+	blueprint_compat = true,	-- Whether it can be copied by blueprint or other jokers.
+	perishable_compat = true,	-- Whether it can have the perishable sticker on it.
+	eternal_compat = true,		-- Whether it can have the eternal sticker on it.
+
+	unlocked = true,			-- Whether this joker is unlocked by default or not.
+	cost = 4,					-- Cost of card in shop.
+	pools = {["scpsn_addition"] = true}, -- Add the Card to this mods pool :)
+
+
+	-- Not 100% Sure what this does at all.
+	loc_vars = function(self, info_queue, card)
+		return { vars = { ( card.ability.extra.xmult ) } }
+	end,
+
+	-- The Jokers Function.
+    calculate = function(self, card, context)
+		if context.joker_main then
+			if G.GAME.blind.chips >= 250000 then
+				-- So guys we did it.
+				play_sound('scpsn_so_guys_we_procced_it', nil, 0.5)
+				return {
+					delay(8 * G.SETTINGS.GAMESPEED),
+					xmult = card.ability.extra.xmult
+				}
+			end
+		end
+    end
+}
+
 ----------------------------------------------------------
 ----------- MOD CODE END -----------------------=---------
