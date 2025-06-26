@@ -1392,7 +1392,7 @@ SMODS.Joker {
 	-- Misc Options:
 	atlas = 'SCPSN_Jokers_Uncommon',
 	pos = { x = 0, y = 6 },
-	rarity = 1,					-- 1 common, 2 uncommon, 3 rare, 4 legendary.
+	rarity = 2,					-- 1 common, 2 uncommon, 3 rare, 4 legendary.
 	blueprint_compat = true,	-- Whether it can be copied by blueprint or other jokers.
 	perishable_compat = true,	-- Whether it can have the perishable sticker on it.
 	eternal_compat = true,		-- Whether it can have the eternal sticker on it.
@@ -1467,7 +1467,7 @@ SMODS.Joker {
 	atlas = 'SCPSN_Jokers_Uncommon',
 	pos = { x = 1, y = 6 },
 	soul_pos = { x = 2, y = 6},
-	rarity = 1,					-- 1 common, 2 uncommon, 3 rare, 4 legendary.
+	rarity = 2,					-- 1 common, 2 uncommon, 3 rare, 4 legendary.
 	blueprint_compat = true,	-- Whether it can be copied by blueprint or other jokers.
 	perishable_compat = true,	-- Whether it can have the perishable sticker on it.
 	eternal_compat = true,		-- Whether it can have the eternal sticker on it.
@@ -1501,6 +1501,86 @@ SMODS.Joker {
 				}
 			end
         end
+    end,
+}
+
+-- Sniper Balatro (Deathmark exclusive!)
+SMODS.Joker {
+	key = 'sniper_balatro',
+	loc_txt = {
+		name = 'Sniper Balatro',
+		text = {
+			--[[
+			- The #1# is a variable that's stored in config, and is put into 'loc_vars'.
+
+			FORMATTING:
+			{C:} -> Color ... Options: mult (red), chips (blue), money (yellow), inactive (dull gray), red (discards), attention (bright orange), dark_edition (negative), green (green)
+			{X:} -> Background color, usually used for XMult
+			{s:} -> Scale, multiplies the text size by the value, like 0.8
+			{V:} -> Variable, allows for a variable to dynamically change the color, like in Castle joker.
+
+			You can put in {} to RESET all formatting, similar to HTMLS "</color>".
+			#1# = Variable #1 (in the Config section), #2# = Variable #2, etc.
+
+			Example:
+			{C:mult}+#1# {} Mult  ->  +4 Mult
+			]]
+			
+			"Played {X:mult,C:white}Marked{} Cards",
+			"Give {X:mult,C:white}#1#X{} Mult when scored",
+			"and are then {C:mult}destroyed{}"
+
+		}
+	},
+
+	-- Establish variables here in a list like fashion. Use this always even if the joker doesn't change any variable.
+	-- Example (Vanilla Joker): "config = { extra = { mult = 4 } }"
+	-- Example (Vanilla Runner): "config = { extra = { chips = 0, chip_gain = 15 } },"
+	config = { extra = { xmult = 2.5, } },
+
+	
+	-- Misc Options:
+	atlas = 'SCPSN_Jokers_Uncommon',
+	pos = { x = 0, y = 7 },
+	rarity = 2,					-- 1 common, 2 uncommon, 3 rare, 4 legendary.
+	blueprint_compat = true,	-- Whether it can be copied by blueprint or other jokers.
+	perishable_compat = true,	-- Whether it can have the perishable sticker on it.
+	eternal_compat = true,		-- Whether it can have the eternal sticker on it.
+
+	unlocked = true,			-- Whether this joker is unlocked by default or not.
+	cost = 6,					-- Cost of card in shop.
+	pools = {["scpsn_addition"] = true}, -- Add the Card to this mods pool :)
+
+
+	-- Not 100% Sure what this does at all.
+	loc_vars = function(self, info_queue, card)
+		return {
+			vars = {
+				card.ability.extra.xmult,
+			}
+		}
+	end,
+
+	-- The Jokers Function.
+    calculate = function(self, card, context)
+        if context.individual and context.cardarea == G.play then
+			if SMODS.has_enhancement(context.other_card, 'm_scpsn_marked') then
+				return {
+					xmult = card.ability.extra.xmult,
+					remove = true
+				}
+			end
+        end
+    end,
+
+	-- Can only appear if a Deathmarked card is in the deck.
+    in_pool = function(self, args)
+        for _, playing_card in ipairs(G.playing_cards or {}) do
+            if SMODS.has_enhancement(playing_card, 'm_scpsn_marked') then
+                return true
+            end
+        end
+        return false
     end,
 }
 

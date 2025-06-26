@@ -130,3 +130,40 @@ Partner_API.Partner{
 	end
 
 }
+
+-- Wanted Poster
+Partner_API.Partner{
+    key = "wanted_poster_partner",
+    name = "wanted_poster_partner",
+    individual_quips = true, -- Whether to have unique starting quips (located in localization cause u gotta do that??)
+    unlocked = true,
+    discovered = true,
+    atlas = "SCPSN_Partners_Compat",
+    pos = {x = 3, y = 0},
+
+    loc_txt = {
+        name = 'Wanted Poster',
+        text = {
+            "Start off with",
+            "all cards in deck being {X:planet,C:white}96.2%{} Pure.",
+        }
+    },
+
+    link_config = {j_scpsn_rerolling_competition = 1},
+    loc_vars = function(self, info_queue, card)
+        local link_level = self:get_link_level()
+        local benefits = 0
+        if link_level == 1 then benefits = 0 end
+        return { vars = { } }
+    end,
+
+    calculate = function(self, card, context)
+        if context.setting_blind and G.GAME.round == 1 then
+            for k, v in pairs(G.playing_cards) do
+                v:set_ability(G.P_CENTERS["m_scpsn_unpure"])
+            end 
+
+            play_sound('scpsn_breaking_bad')
+        end
+	end
+}

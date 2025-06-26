@@ -23,6 +23,28 @@ return {
                 "3... 2... 1...",
                 "GO!"
             },
+
+            pnr_scpsn_wanted_poster_1={
+                "WANTED FOR DRUG SMUGGLING",
+                "BOUNTY: 3$"
+            },
+
+            pnr_scpsn_wanted_poster_2={
+                "WANTED FOR OVERUSING PHOTOCHAD",
+                "BOUNTY: 10,000$"
+            },
+
+            pnr_scpsn_wanted_poster_3={
+                "WANTED FOR OVERUSING BARON MIME",
+                "BOUNTY: 10,000$"
+            },
+
+            pnr_scpsn_wanted_poster_4={
+                "NOT WANTED FOR USING VAGABOND",
+                "BOUNTY: -5,000$"
+            },
+
+
         },
     },
 }

@@ -53,3 +53,25 @@ SMODS.Enhancement{
         h_chips = 45,
     }
 }
+
+-- Marked
+SMODS.Enhancement{
+    key = 'marked',
+    atlas = 'SCPSN_Enhancements',
+    pos = { x = 2, y = 0},
+    shatters = false,
+
+    loc_txt = {
+        name = "Marked",
+        label = "Marked",
+        text = {
+            "Not much on its own {C:inactive}/{}",
+            "Synergizes with Jokers {C:inactive}/{}",
+            "Cannot be {C:mult}Debuffed{}"
+        }
+    },
+
+    calculate = function(self, card, context)
+        SMODS.debuff_card(card, 'prevent_debuff', 'scpsn_death_mark') -- Hopefully works?
+    end
+}
