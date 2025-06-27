@@ -76,38 +76,19 @@ SMODS.Joker {
                 func = function()
                     -- This is for retrigger purposes, Jokers need to return something to retrigger
                     -- You can also do this outside the return and `return nil, true` instead
-                    G.E_MANAGER:add_event(Event({
-                        func = (function()
+					
+					local card = create_card("tower_card", G.Jokers, nil, nil, nil, nil, nil, 'tower_card')
+					card:add_to_deck()
+					G.jokers:emplace(card)
 
-							local towerCardKeys = {}
-
-							for _, card in pairs(SMODS.Jokers) do
-								if card.pools and card.pools["tower_card"] then
-									table.insert(towerCardKeys, card.key)
-								end
-							end
-
-							-- Pick a random index
-							local randIndex = math.random(#towerCardKeys)
-
-							-- Return the key
-							local towerKey = towerCardKeys[randIndex]
-
-							SMODS.add_card {
-                            set = 'Joker',
-                            key = towerKey,
-                            key_append = 'ps_giftcard' -- Optional, useful for checking the source of the creation in `in_pool`.
-                        }
-
-                          return true
-                        end)
-                    }))
                 end
             }
         end
     end
 }
 
+print(G.P_CENTER_POOLS.TOWER_CARD)
+print(G.P_CENTER_POOLS.TOWERCARD)
 
 -- Blueberry Lasers
 SMODS.Joker {
@@ -383,17 +364,17 @@ SMODS.Joker {
 
 	-- The Jokers Function.
     calculate = function(self, card, context)
+		-- Destroy Cards
 		if context.after and context.main_eval and not context.blueprint then
-
             for _, scored_card in ipairs(context.scoring_hand) do
                 if scored_card.debuff then
 					if scored_card and not scored_card.ability.eternal and not scored_card.getting_sliced then
 						scored_card.getting_sliced = true
-						G.GAME.joker_buffer = G.GAME.joker_buffer - 1
 						G.E_MANAGER:add_event(Event({
 							func = function()
-								card:juice_up(0.8, 0.8)
+								scored_card:juice_up(0.8, 0.8)
 								scored_card:start_dissolve({ HEX("1cfc03") }, nil, 1.6)
+								SMODS.destroy_cards(scored_card)
 								return true
 							end
 						}))
@@ -709,7 +690,7 @@ SMODS.Joker {
 		text = {
 			"{C:mult}+3 Mult{} per card",
 			"above {C:attention}52{} in your full deck",
-			"{C:inactive}(Currently{} {C:mult}+#2#{} {C:inactive}Mult{})"
+			"{C:inactive}(Currently{} {C:mult}+#2#{} {C:inactive}Mult){}"
 		}
 	},
 	atlas = 'SCPSN_Jokers_Uncommon',
@@ -805,7 +786,8 @@ SMODS.Joker {
 }
 
 -- Really Fragile joker
--- Coded by TheMaster
+-- Coded by TheMaster (Originally)
+-- Re-coded by me :)
 SMODS.Joker {
 	key = 'fragilejoker',
 	loc_txt = {
@@ -829,7 +811,7 @@ SMODS.Joker {
 
 			"{X:mult,C:white}X#1#{} Mult",
 			"{C:mult}Destroyed{} when anything",
-			"is destroyed or sold."
+			"is sold or used."
 		}
 	},
 
@@ -864,59 +846,20 @@ SMODS.Joker {
 		-- Contexts are basically when the Joker chooses to do a thing.
 		-- To find contexts, look at Here: https://raw.githubusercontent.com/nh6574/VanillaRemade/refs/heads/main/src/jokers.lua
 
-		if context.selling_card then
+		-- Being Destroyed (Oops!)
+		if context.selling_card or context.using_consumeable then
+			card.getting_sliced = true
+			G.GAME.joker_buffer = G.GAME.joker_buffer - 1
 			G.E_MANAGER:add_event(Event({
 				func = function()
-					play_sound('tarot1')
-					card.T.r = -0.2
-					card:juice_up(0.3, 0.4)
-					card.states.drag.is = true
-					card.children.center.pinch.x = true
-					-- This part destroys the card.
-					G.E_MANAGER:add_event(Event({
-						trigger = 'after',
-						delay = 0.3,
-						blockable = false,
-						func = function()
-							card:remove()
-							card = nil
-							return true;
-						end
-					}))
+					card:juice_up(0.8, 0.8)
+					card:start_dissolve({ HEX("fc0303") }, nil, 1.6)
 					return true
 				end
 			}))
-			return {
-				message = 'Destroyed!'
-				}
 		end
-		if context.remove_playing_cards then
-			G.E_MANAGER:add_event(Event({
-				func = function()
-					play_sound('tarot1')
-					card.T.r = -0.2
-					card:juice_up(0.3, 0.4)
-					card.states.drag.is = true
-					card.children.center.pinch.x = true
-					-- This part destroys the card.
-					G.E_MANAGER:add_event(Event({
-						trigger = 'after',
-						delay = 0.3,
-						blockable = false,
-						func = function()
-							card:remove()
-							card = nil
-							return true;
-						end
-					}))
-					return true
-				end
-			}))
-			return {
-				message = 'Destroyed!'
-				}
-			end
 
+		-- Normal Use
         if context.joker_main then
 			return {
 				Xmult = card.ability.extra.Xmult
@@ -1563,14 +1506,39 @@ SMODS.Joker {
 
 	-- The Jokers Function.
     calculate = function(self, card, context)
+
+		-- Apply XMult
         if context.individual and context.cardarea == G.play then
 			if SMODS.has_enhancement(context.other_card, 'm_scpsn_marked') then
 				return {
-					xmult = card.ability.extra.xmult,
-					remove = true
+					xmult = card.ability.extra.xmult
 				}
 			end
         end
+
+		-- Destroy Cards
+		if context.after and context.main_eval and not context.blueprint then
+            for _, scored_card in ipairs(context.scoring_hand) do
+                if SMODS.has_enhancement(scored_card, 'm_scpsn_marked') then
+					if scored_card and not scored_card.ability.eternal and not scored_card.getting_sliced then
+						scored_card.getting_sliced = true
+						G.E_MANAGER:add_event(Event({
+							func = function()
+								scored_card:juice_up(0.8, 0.8)
+								scored_card:start_dissolve({ HEX("42301d") }, nil, 1.6)
+								SMODS.destroy_cards(scored_card)
+								return true
+							end
+						}))
+					end
+				end
+            end
+
+			return {
+				message = "Boom, Headshot."
+			}
+        end
+
     end,
 
 	-- Can only appear if a Deathmarked card is in the deck.
