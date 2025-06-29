@@ -17,7 +17,7 @@ assert(SMODS.load_file("src/decks.lua"))()
 
 if next(SMODS.find_mod('partner')) then -- Optional Partners Dependency
     print("[SCPSN] Partner Compatability LOADING")
-    assert(SMODS.load_file("src/partner_compat.lua"))()
+    assert(SMODS.load_file("src/compat_partners.lua"))()
 end
 
 -- SCPSN Joker Pool(s)
@@ -39,11 +39,16 @@ SMODS.ObjectType({
 	end,
 })
 
+-- Mod Icon
+SMODS.Atlas{
+    key = "modicon",   
+    px = 34,
+    py = 34,
+    path = "Icon.png"
+}
+
 --Load Localization file(s maybe)
 assert(SMODS.load_file("localization/en-us.lua"))()
-
-
-
 
 -- Credits Page
 SMODS.current_mod.extra_tabs = function()

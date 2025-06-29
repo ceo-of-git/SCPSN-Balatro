@@ -121,7 +121,7 @@ SMODS.Blind{
     pos = {x = 0, y = 1},
     unlocked = true,
 
-    mult = 8,
+    mult = 6,
     dollars = 6,
     boss = { min = 39, max = 39, false},
     boss_colour = HEX('ff6200'),
@@ -344,7 +344,7 @@ SMODS.Blind{
     pos = {x = 0, y = 0},
     unlocked = true,
 
-    mult = 12,
+    mult = 15,
     dollars = 10,
     boss = { min = 6, max = 39, false},
     boss_colour = HEX('3d3d3d'),

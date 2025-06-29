@@ -82,7 +82,7 @@ Partner_API.Partner{
     end,
 
     loc_txt = {
-        name = 'Cheating Partner',
+        name = 'Paid off Dealer',
         text = {
             "Allows you to discard",
             "{C:attention}#1#{} extra cards",

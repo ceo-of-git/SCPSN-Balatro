@@ -87,9 +87,6 @@ SMODS.Joker {
     end
 }
 
-print(G.P_CENTER_POOLS.TOWER_CARD)
-print(G.P_CENTER_POOLS.TOWERCARD)
-
 -- Blueberry Lasers
 SMODS.Joker {
 	key = 'blueberry_lasers',
@@ -1370,6 +1367,16 @@ SMODS.Joker {
 			end
         end
     end,
+
+	-- Can only appear if a 99.1% or 96.2% pure card is in the deck.
+    in_pool = function(self, args)
+        for _, playing_card in ipairs(G.playing_cards or {}) do
+            if SMODS.has_enhancement(playing_card, 'm_scpsn_pure') or SMODS.has_enhancement(playing_card, 'm_scpsn_unpure') then
+                return true
+            end
+        end
+        return false
+    end,
 }
 
 -- Are these the most crispy fries
@@ -1445,6 +1452,17 @@ SMODS.Joker {
 			end
         end
     end,
+
+	-- Can only appear if a 99.1% or 96.2% pure card is in the deck.
+    in_pool = function(self, args)
+        for _, playing_card in ipairs(G.playing_cards or {}) do
+            if SMODS.has_enhancement(playing_card, 'm_scpsn_pure') or SMODS.has_enhancement(playing_card, 'm_scpsn_unpure') then
+                return true
+            end
+        end
+        return false
+    end,
+
 }
 
 -- Sniper Balatro (Deathmark exclusive!)
@@ -1479,7 +1497,7 @@ SMODS.Joker {
 	-- Establish variables here in a list like fashion. Use this always even if the joker doesn't change any variable.
 	-- Example (Vanilla Joker): "config = { extra = { mult = 4 } }"
 	-- Example (Vanilla Runner): "config = { extra = { chips = 0, chip_gain = 15 } },"
-	config = { extra = { xmult = 2.5, } },
+	config = { extra = { xmult = 2.0, } },
 
 	
 	-- Misc Options:
@@ -1491,7 +1509,7 @@ SMODS.Joker {
 	eternal_compat = true,		-- Whether it can have the eternal sticker on it.
 
 	unlocked = true,			-- Whether this joker is unlocked by default or not.
-	cost = 6,					-- Cost of card in shop.
+	cost = 9,					-- Cost of card in shop.
 	pools = {["scpsn_addition"] = true}, -- Add the Card to this mods pool :)
 
 
