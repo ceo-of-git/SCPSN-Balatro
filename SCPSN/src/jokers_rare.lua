@@ -573,6 +573,72 @@ SMODS.Joker {
     end
 }
 
+-- Mystery Box
+SMODS.Sound({key = "mystery_box_proc", path = "mystery_box_proc.ogg",})
+SMODS.Joker {
+    key = "mystery_box",
+	loc_txt = {
+		name = 'Mystery Box',
+		text = {
+			"When sold, create a {C:dark_edition}Legendary{} Joker {C:inactive}(Must have Room!){}",
+			"{C:green}#1# in #2# chance{} to instantly {C:mult}Lose{} the run.",
+		}
+	},
+
+	config = { extra = { odds = 6 } },
+    blueprint_compat = false,
+    rarity = 3,
+    cost = 10,
+	atlas = 'SCPSN_Jokers_Rare',
+    pos = { x = 2, y = 2 },
+
+	loc_vars = function(self, info_queue, card)
+		return { vars = { G.GAME.probabilities.normal or 1, card.ability.extra.odds} }
+	end,
+
+	-- The Jokers Function.
+    calculate = function(self, card, context)
+    	if context.selling_self then
+			play_sound('scpsn_mystery_box_proc')
+
+			if pseudorandom('ps_mystery_box') < G.GAME.probabilities.normal / card.ability.extra.odds then
+				-- Instantly Lose
+				G.E_MANAGER:add_event(Event({
+					trigger = 'after',
+					delay = 6 * G.SETTINGS.GAMESPEED,
+					blockable = false,
+					func = function()
+						G.STATE = G.STATES.GAME_OVER
+						G.STATE_COMPLETE = false
+						ease_hands_played(-1000000, true) -- just in case
+						return true
+					end
+				}))
+
+				
+			else
+				-- Get a Legendary!
+				if #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit then
+					G.E_MANAGER:add_event(Event({
+						trigger = 'after',
+						delay = 6 * G.SETTINGS.GAMESPEED,
+						blockable = false,
+						func = function()
+							SMODS.add_card {
+								set = 'Joker',
+								rarity = 'Legendary',
+								key_append = 'vremade_mysterybox' -- Optional, useful for checking the source of the creation in `in_pool`.
+							}
+							G.GAME.joker_buffer = 0
+							return true
+						end
+					}))
+				end
+			end
+		end
+    end
+}
+
 
 ----------------------------------------------------------
 ----------- MOD CODE END -----------------------=---------
