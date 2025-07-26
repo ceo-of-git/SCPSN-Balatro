@@ -1627,7 +1627,7 @@ SMODS.Joker {
 		text = {
 			
 			"Upgrade played hand",
-			"{X:mult,C:white}X#1#{} Mult",
+			"{X:mult,C:white}X-1{} Mult",
 			
 		}
 	},
@@ -1644,7 +1644,7 @@ SMODS.Joker {
 	cost = 12,					-- Cost of card in shop.
 	pools = {["scpsn_addition"] = true}, -- Add the Card to this mods pool :)
 
-	config = { extra = { Xmult = -1.00, } },
+	config = { extra = { Xmult = -1, } },
 
 	-- The Jokers Function.
     calculate = function(self, card, context)
@@ -1657,7 +1657,7 @@ SMODS.Joker {
 
 		if context.joker_main then
 			return {
-				xmult = -1
+				xmult = card.ability.extra.Xmult
 			}
 		end
     end,
