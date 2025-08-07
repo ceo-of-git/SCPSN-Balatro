@@ -2,6 +2,7 @@
 -- Maybe in V3.0 I'll make everything localized but I doubt ill ever get translators for this garbage
 
 return {
+    -- Partner API Compat
     misc = {
         quips={
             pnr_scpsn_special_ops_1={
@@ -17,6 +18,22 @@ return {
             pnr_scpsn_illegal_pokerhand_2={
                 "Shhhh, hush. We will",
                 "get away with this"
+            },
+        },
+    },
+
+    -- Modify Base Game Joker(s)
+    descriptions = {
+        Joker = {
+            j_dna={
+                name="Realistic Joker Genetics"
+            },
+
+            j_seance={
+                text={
+                    "I dont like this joker,",
+                    "don't use it",
+                },
             },
         },
     },

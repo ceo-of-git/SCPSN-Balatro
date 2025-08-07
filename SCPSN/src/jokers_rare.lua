@@ -580,7 +580,7 @@ SMODS.Joker {
 	loc_txt = {
 		name = 'Mystery Box',
 		text = {
-			"When sold, create a {C:dark_edition}Legendary{} Joker {C:inactive}(Must have Room!){}",
+			"When sold, create a {C:dark_edition}Legendary{} Joker {C:inactive}(Must have Extra Room!){}",
 			"{C:green}#1# in #2# chance{} to instantly {C:mult}Lose{} the run.",
 		}
 	},
@@ -588,7 +588,7 @@ SMODS.Joker {
 	config = { extra = { odds = 6 } },
     blueprint_compat = false,
     rarity = 3,
-    cost = 10,
+    cost = 15,
 	atlas = 'SCPSN_Jokers_Rare',
     pos = { x = 2, y = 2 },
 
@@ -639,6 +639,51 @@ SMODS.Joker {
     end
 }
 
+-- Nasa supercomputer
+SMODS.Joker {
+    key = "nasa_supercomputer",
+	loc_txt = {
+		name = 'Nasa Database',
+		text = {
+			"Gain {C:chips}chips{} equal to half of the",
+			"amount of {C:attention}calculations{}",
+			"the game had to perform.",
+			"{C:inactive}(Currently: {}{C:chips}+#1#{}{C:inactive}){}",
+			"",
+			"Costs {C:attention}3${} to keep",
+			"running every round."
+		}
+	},
+
+	config = { extra = { chips = 0 } },
+    blueprint_compat = true,
+    rarity = 3,
+    cost = 15,
+	atlas = 'SCPSN_Jokers_Rare',
+    pos = { x = 0, y = 3 },
+
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.chips } }
+	end,
+
+	add_to_deck = function(self, card, from_debuff)
+		SMODS.Stickers["rental"]:apply(card, true)
+    end,
+
+	-- The Jokers Function.
+    calculate = function(self, card, context)
+		if context.joker_main then
+			-- Gather the amount of events into chippppp
+			-- Line half-taken from Debug plus kinda :)
+			card.ability.extra.chips = card.ability.extra.chips + ((#(G.E_MANAGER.queues and G.E_MANAGER.queues.base or {}) / 2))
+
+			return {
+				chips = card.ability.extra.chips,
+				message = "Processed " .. card.ability.extra.chips .. " calculations",
+			}
+		end
+    end
+}
 
 ----------------------------------------------------------
------------ MOD CODE END -----------------------=---------
+----------- MOD CODE END ---------------------------------
