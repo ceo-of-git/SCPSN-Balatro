@@ -1621,5 +1621,71 @@ SMODS.Joker {
     end,
 }
 
+-- Encrusted Key
+SMODS.Joker {
+	key = 'encrusted_key',
+	loc_txt = {
+		name = 'Encrusted Key',
+		text = {
+			
+			"Next shop is Guaranteed to have",
+			"a {C:planet}spectral pack{}",
+			"{C:mult}Self Destructs after next shop{}",
+
+		}
+	},
+
+	-- Establish variables here in a list like fashion. Use this always even if the joker doesn't change any variable.
+	-- Example (Vanilla Joker): "config = { extra = { mult = 4 } }"
+	-- Example (Vanilla Runner): "config = { extra = { chips = 0, chip_gain = 15 } },"
+	config = { extra = { }, },
+
+	
+	-- Misc Options:
+	atlas = 'SCPSN_Jokers_Common',
+	pos = { x = 0, y = 7 },
+	rarity = 1,					-- 1 common, 2 uncommon, 3 rare, 4 legendary.
+	blueprint_compat = false,	-- Whether it can be copied by blueprint or other jokers.
+	perishable_compat = true,	-- Whether it can have the perishable sticker on it.
+	eternal_compat = false,		-- Whether it can have the eternal sticker on it.
+
+	unlocked = true,			-- Whether this joker is unlocked by default or not.
+	cost = 2,					-- Cost of card in shop.
+	pools = {["scpsn_addition"] = true}, -- Add the Card to this mods pool :)
+
+
+	-- Not 100% Sure what this does at all.
+	loc_vars = function(self, info_queue, card)
+		return
+	end,
+
+	-- The Jokers Function.
+    calculate = function(self, card, context)
+
+		-- Summon Spectral pack at start of shop
+		if context.starting_shop then
+			SMODS.add_booster_to_shop("p_spectral_mega_1")
+        end
+
+		-- Destroy Self at shops end
+		if context.ending_shop then
+			local sliced_card = card
+			local destroyedJokerCount = 0
+			if sliced_card and not sliced_card.ability.eternal and not sliced_card.getting_sliced then
+				destroyedJokerCount = destroyedJokerCount + 1
+				sliced_card.getting_sliced = true
+				G.GAME.joker_buffer = G.GAME.joker_buffer - 1
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						card:juice_up(0.8, 0.8)
+						sliced_card:start_dissolve({ HEX("904fc2") }, nil, 3)
+						return true
+					end
+				}))
+			end
+		end
+    end,
+}
+
 ----------------------------------------------------------
 ----------- MOD CODE END -----------------------=---------

@@ -198,7 +198,7 @@ SMODS.Joker {
     end,
 }
 
--- Bibically Accurate Joker
+-- Bibically Accurate Joker (Tower)
 SMODS.Joker {
 	key = 'bible_jonkler',
 	loc_txt = {
@@ -246,6 +246,7 @@ SMODS.Joker {
 	pools = {["tower_card"] = true, ["scpsn_addition"] = true},
 
     loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue+1] = {set = 'Other', key = 'scpsn_tower_card'}
         local gold_tally = 0
         if G.playing_cards then
             for _, playing_card in ipairs(G.playing_cards) do

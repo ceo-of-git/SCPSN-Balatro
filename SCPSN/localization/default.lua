@@ -28,14 +28,14 @@ return {
             scpsn_tower_card={
                 ['name'] = 'Tower Card',
                 ['text'] = {
-                    [1] = '{C:attention}Synergizes{} with some',
-                    [2] = 'other scpsn jokers'
+                    [1] = 'has special {C:attention}synergies{} with',
+                    [2] = 'some other scpsn jokers'
                 }
             },
             scpsn_redeem={
                 ['name'] = 'Redeem',
                 ['text'] = {
-                    [1] = 'Spawn a {C:attention}random{}',
+                    [1] = 'Spawn a random',
                     [2] = '{C:attention}tower{} joker'
                 }
             }
