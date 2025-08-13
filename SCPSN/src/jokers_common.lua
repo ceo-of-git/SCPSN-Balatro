@@ -1687,5 +1687,68 @@ SMODS.Joker {
     end,
 }
 
+-- Takedown Notice (Tower)
+SMODS.Joker {
+    key = 'takedown_notice',
+	loc_txt = {
+		name = 'Takedown Notice',
+		text = {
+			
+			"{C:chips}+#2#{} Chips per",
+			"held {C:attention}tower{} joker",
+			"{C:inactive,s:0.9}(Currently:{} {C:chips,s:0.9}+#1#{} {C:inactive,s:0.9}Chips ){}"
+
+		}
+	},
+
+	-- Establish variables here in a list like fashion. Use this always even if the joker doesn't change any variable.
+	-- Example (Vanilla Joker): "config = { extra = { mult = 4 } }"
+	-- Example (Vanilla Runner): "config = { extra = { chips = 0, chip_gain = 15 } },"
+	config = { extra = { chips = 0, chips_mod = 20 } },
+
+	
+	-- Misc Options:
+	atlas = 'SCPSN_Jokers_Common',
+	pos = { x = 1, y = 7 },
+	rarity = 1,					-- 1 common, 2 uncommon, 3 rare, 4 legendary.
+	blueprint_compat = true,	-- Whether it can be copied by blueprint or other jokers.
+	perishable_compat = true,	-- Whether it can have the perishable sticker on it.
+	eternal_compat = true,		-- Whether it can have the eternal sticker on it.
+
+	unlocked = true,			-- Whether this joker is unlocked by default or not.
+	cost = 5,					-- Cost of card in shop.
+	pools = {["tower_card"] = true, ["scpsn_addition"] = true}, -- Add the Card to this mods pool :)
+
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue+1] = {set = 'Other', key = 'scpsn_tower_card'}
+		return {
+			vars = {
+				card.ability.extra.chips,
+				card.ability.extra.chips_mod
+			}
+		}
+	end,
+
+    calculate = function(self, card, context)
+		-- Gather amount of Tower Cards
+		local tower_cards = 0
+		for i = 1, #G.jokers.cards do
+			if G.jokers.cards[i].config.center.pools and G.jokers.cards[i].config.center.pools.tower_card then
+				tower_cards = tower_cards + 1
+			end
+		end
+		
+		-- Set Chips
+		card.ability.extra.chips = (card.ability.extra.chips_mod * tower_cards)
+
+		-- Apply Chips
+		if context.joker_main then
+			return {
+				chips = card.ability.extra.chips
+			}
+		end
+	end,
+}
+
 ----------------------------------------------------------
 ----------- MOD CODE END -----------------------=---------
