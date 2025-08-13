@@ -47,6 +47,9 @@ SMODS.Atlas{
     path = "Icon.png"
 }
 
+-- SMODS Optional Features
+SMODS.current_mod.optional_features = { quantum_enhancements = true }
+
 --Load Localization file(s maybe)
 assert(SMODS.load_file("localization/en-us.lua"))()
 

@@ -1664,5 +1664,45 @@ SMODS.Joker {
 
 }
 
+-- Luigis Simplified Poker
+SMODS.Joker {
+	key = 'simplified_poker',
+	loc_txt = {
+		name = "Luigi's Rules",
+		text = {
+			
+			"All played cards are treated as",
+			"if they are {C:attention}wild cards{}.",
+			
+		}
+	},
+	
+	-- Misc Options:
+	atlas = 'SCPSN_Jokers_Uncommon',
+	pos = { x = 0, y = 8 },
+	soul_pos = { x = 1, y = 8 },
+	rarity = 2,					-- 1 common, 2 uncommon, 3 rare, 4 legendary.
+	blueprint_compat = false,	-- Whether it can be copied by blueprint or other jokers.
+	perishable_compat = true,	-- Whether it can have the perishable sticker on it.
+	eternal_compat = true,		-- Whether it can have the eternal sticker on it.
+
+	unlocked = true,			-- Whether this joker is unlocked by default or not.
+	cost = 7,					-- Cost of card in shop.
+	pools = {["scpsn_addition"] = true}, -- Add the Card to this mods pool :)
+
+	loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue+1] = G.P_CENTERS.m_wild 
+        return
+    end,
+
+    calculate = function(self, card, context)
+		if context.check_enhancement and not context.blueprint then
+            if context.other_card.config.center.key ~= "m_wild" then
+                return { m_wild = true }
+            end
+		end
+    end
+}
+
 ----------------------------------------------------------
 ----------- MOD CODE END ---------------------------------
