@@ -22,8 +22,26 @@ return {
         },
     },
 
-    -- Modify Base Game Joker(s)
     descriptions = {
+        -- Info Queues
+        Other = {
+            scpsn_tower_card={
+                ['name'] = 'Tower Card',
+                ['text'] = {
+                    [1] = '{C:attention}Synergizes{} with some',
+                    [2] = 'other scpsn jokers'
+                }
+            },
+            scpsn_redeem={
+                ['name'] = 'Redeem',
+                ['text'] = {
+                    [1] = 'Spawn a {C:attention}random{}',
+                    [2] = '{C:attention}tower{} joker'
+                }
+            }
+        },
+
+        -- Modify Base Game Joker(s)
         Joker = {
             j_dna={
                 name="Realistic Joker Genetics"

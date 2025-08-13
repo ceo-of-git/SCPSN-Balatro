@@ -147,6 +147,7 @@ SMODS.Joker {
 
 	-- Not 100% Sure what this does at all.
 	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue+1] = {set = 'Other', key = 'scpsn_tower_card'}
 		return {
 			vars = {
 				card.ability.extra.Xmult,

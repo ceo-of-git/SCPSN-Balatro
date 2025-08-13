@@ -66,6 +66,8 @@ SMODS.Joker {
 
 	-- Not 100% Sure what this does at all.
 	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue+1] = {set = 'Other', key = 'scpsn_redeem'}
+		info_queue[#info_queue+1] = {set = 'Other', key = 'scpsn_tower_card'}
 		return { vars = { card.ability.extra.mult } }
 	end,
 
@@ -134,6 +136,7 @@ SMODS.Joker {
 
 	-- Not 100% Sure what this does at all.
 	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue+1] = {set = 'Other', key = 'scpsn_tower_card'}
 		return {
 			vars = {
 				card.ability.extra.repetitions,
@@ -274,7 +277,8 @@ SMODS.Joker {
 
 	-- Not 100% Sure what this does at all.
 	loc_vars = function(self, info_queue, card)
-
+		info_queue[#info_queue+1] = {set = 'Other', key = 'scpsn_tower_card'}
+		return
 	end,
 
 	-- The Jokers Function.
@@ -1076,6 +1080,7 @@ SMODS.Joker {
 
 	-- Not 100% Sure what this does at all.
 	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue+1] = {set = 'Other', key = 'scpsn_tower_card'}
 		return {
 			vars = {
 				card.ability.extra.mult,
@@ -1664,11 +1669,11 @@ SMODS.Joker {
 
 }
 
--- Luigis Simplified Poker
+-- Luigis Picture Poker
 SMODS.Joker {
 	key = 'simplified_poker',
 	loc_txt = {
-		name = "Luigi's Rules",
+		name = "Picture Poker",
 		text = {
 			
 			"All played cards are treated as",

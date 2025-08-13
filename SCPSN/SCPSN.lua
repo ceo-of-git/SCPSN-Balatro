@@ -51,7 +51,7 @@ SMODS.Atlas{
 SMODS.current_mod.optional_features = { quantum_enhancements = true }
 
 --Load Localization file(s maybe)
-assert(SMODS.load_file("localization/en-us.lua"))()
+assert(SMODS.load_file("localization/default.lua"))()
 
 -- Credits Page
 SMODS.current_mod.extra_tabs = function()
