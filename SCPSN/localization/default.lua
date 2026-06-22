@@ -19,6 +19,13 @@ return {
                 "Shhhh, hush. We will",
                 "get away with this"
             },
+
+            pnr_scpsn_cook_1={
+                "We Need to Cook Jesse"
+            },
+            pnr_scpsn_cook_2={
+                "We are the danger"
+            },
         },
     },
 

@@ -100,7 +100,7 @@ Partner_API.Partner{
 Partner_API.Partner{
     key = "rerolling_contest_host",
     name = "rerolling_contest_host",
-    individual_quips = true, -- Whether to have unique starting quips (located in localization cause u gotta do that??)
+    no_quips = true,
     unlocked = true,
     discovered = true,
     atlas = "SCPSN_Partners_Compat",
@@ -125,8 +125,54 @@ Partner_API.Partner{
 
     calculate = function(self, card, context)
         if context.setting_blind and G.GAME.round == 1 then
-            change_shop_size(2)
+            change_shop_size(card.ability.extra.extrashopcards)
         end
 	end
+
+}
+
+-- Cook Partner
+Partner_API.Partner{
+    key = "cook",
+    name = "cook",
+    individual_quips = true, -- Whether to have unique starting quips (located in localization cause u gotta do that??)
+    unlocked = true,
+    discovered = true,
+    atlas = "SCPSN_Partners_Compat",
+    pos = {x = 3, y = 0},
+
+    config = { extra = {odds = 2, cardstoconvert = 1}, },
+
+    link_config = {j_scpsn_bulletin_board = 1},
+    loc_vars = function(self, info_queue, card)
+        local link_level = self:get_link_level()
+        local benefits = 0
+        if link_level == 1 then benefits = 0 end
+        return { vars = {card.ability.extra.odds, card.ability.extra.cardstoconvert, card.ability.extra.cardstoconvert + benefits} }
+    end,
+
+    loc_txt = {
+        name = 'The Cook',
+        text = {
+            "{C:green}1 in #1#{} Chance to convert {C:attention}#3#{} card in hand",
+            "into a {X:chips,C:white}99.1%{} or {X:planet,C:white}96.2%{} at the end of every turn."
+        }
+    },
+
+    calculate = function(self, card, context)
+        if context.after then
+            if pseudorandom('cook_partner') < G.GAME.probabilities.normal / card.ability.extra.odds then
+                for i = 1, card.ability.extra.cardstoconvert do
+                    if G.hand.cards[i] then
+                        if pseudorandom("cook_partner_type") < G.GAME.probabilities.normal / 2 then
+                            G.hand.cards[i]:set_ability("m_scpsn_pure")
+                        else
+                            G.hand.cards[i]:set_ability("m_scpsn_unpure")
+                        end
+                    end
+                end 
+            end
+        end
+    end
 
 }

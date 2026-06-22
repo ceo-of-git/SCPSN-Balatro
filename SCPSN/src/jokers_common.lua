@@ -491,20 +491,6 @@ SMODS.Joker {
 }
 
 -- The Cartel
-function calculate_purity_levels()
-	-- I think this is unused but im too scared to remove the code for this.
-    local count = 0
-    for _, card in ipairs(G.playing_cards) do
-		if SMODS.has_enhancement(card, 'm_scpsn_pure') then
-			count = count + 1.25
-		end
-
-		if SMODS.has_enhancement(card, 'm_scpsn_unpure') then
-			count = count + 1.1
-		end
-	end
-    return count
-end
 SMODS.Joker {
 	key = 'cartel_card',
 	loc_txt = {
