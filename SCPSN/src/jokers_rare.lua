@@ -587,10 +587,10 @@ SMODS.Joker {
 		}
 	},
 
-	config = { extra = { odds = 6 } },
+	config = { extra = { odds = 5 } },
     blueprint_compat = false,
     rarity = 3,
-    cost = 15,
+    cost = 30,
 	atlas = 'SCPSN_Jokers_Rare',
     pos = { x = 2, y = 2 },
 

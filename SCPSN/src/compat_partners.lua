@@ -16,6 +16,7 @@ SMODS.Atlas {
 print("TEST")
 
 -- Special Ops Partner
+-- Retrigger last card played twice if played hand is a Pair
 Partner_API.Partner{
     key = "special_ops",
     name = "special_ops",
@@ -61,6 +62,7 @@ Partner_API.Partner{
 }
 
 -- Illegal Poker Hand Partner
+-- Be able to discard 2 extra cards 
 Partner_API.Partner{
     -- Im sure there are 0 bugs with this guy
     key = "illegal_pokerhand",
@@ -97,6 +99,7 @@ Partner_API.Partner{
 }
 
 -- Rerolling Competition Partner
+-- +2 Jokers in Shop
 Partner_API.Partner{
     key = "rerolling_contest_host",
     name = "rerolling_contest_host",
@@ -132,6 +135,7 @@ Partner_API.Partner{
 }
 
 -- Cook Partner
+-- 1/2 chance to convert 1 held card into either 99.1% or 96.2% pure enhancement
 Partner_API.Partner{
     key = "cook",
     name = "cook",
@@ -172,6 +176,59 @@ Partner_API.Partner{
                     end
                 end 
             end
+        end
+    end
+
+}
+
+-- 57 Leaf Clover Partner
+-- All probabilities are multiplied by 2, always have an expensive Mystery Box in the shop.
+Partner_API.Partner{
+    key = "57_leaf_clover",
+    name = "57_leaf_clover",
+    no_quips = true,
+    unlocked = true,
+    discovered = true,
+    atlas = "SCPSN_Partners_Compat",
+    pos = {x = 4, y = 0},
+
+    config = { extra = {}, },
+
+    link_config = {j_scpsn_mystery_box = 1},
+    loc_vars = function(self, info_queue, card)
+        local link_level = self:get_link_level()
+        local benefits = 0
+        if link_level == 1 then benefits = 0 end
+        return { vars = {} }
+    end,
+
+    loc_txt = {
+        name = '57 Leaf Clover',
+        text = {
+            "{C:green}Doubles every chance{}",
+            "Adds a 30$ {C:dark_edition}Mystery Box{} to every shop",
+            "{C:inactive}(Only after re-rolling atleast once!){}"
+        }
+    },
+
+    calculate = function(self, card, context)
+        if context.setting_blind and G.GAME.round == 1 then
+            for k, v in pairs(G.GAME.probabilities) do
+                G.GAME.probabilities[k] = v * 2
+            end
+        end
+
+        if context.reroll_shop then
+            local mystery_box = SMODS.create_card{
+                set = "Joker",
+                area = G.shop_jokers,
+                key = "j_scpsn_mystery_box"
+            }
+
+            G.shop_jokers:emplace(mystery_box)
+            create_shop_card_ui(mystery_box, "Joker", G.shop_jokers)
+
+            print("MYSTERY BOX DONE!")
         end
     end
 
