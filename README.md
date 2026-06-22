@@ -5,13 +5,18 @@ One of the _worst_ balatro mods ever made!
 **Featuring:**
 - Over 2 jokers!
 - Atleast one other piece of content!
-- [Partner API](https://github.com/Icecanno/Partner-API/) Compatibility! (OPTIONAL!)
 
 ---
 
 **Requirements:**
-- [Steamodded](https://github.com/Steamodded/smods) (>=1.0.0~ALPHA-1225a)
+- [Steamodded](https://github.com/Steamodded/smods) (>=1.0.0~BETA-1814a)
+
 ["Oh no! How do I install this excellent looking mod!? Fear not. Click here to find out..."](https://youtu.be/uDfxnwHO134)
+
+---
+**Optional Compatibility:**
+- [Partner API](https://github.com/Icecanno/Partner-API/)
+
 
 ---
 
