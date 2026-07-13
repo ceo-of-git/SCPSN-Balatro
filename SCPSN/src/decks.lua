@@ -11,12 +11,48 @@ SMODS.Atlas {
 }
 
 SMODS.Back{
+    key = "the_elon_musk",
+    loc_txt = {
+        name = "The Elon Musk",
+        text = {
+            "{C:money}All cards are Golden{}",
+            "Rental Jokers are Enabled & Pricier",
+            "-16$ per hand left at end of blind",
+            "Rerolls start at 20$"
+        }
+    },
+
+    atlas = "SCPSN_Decks",
+    pos = { x = 2, y = 0 },
+
+    apply = function(self, back)
+        G.GAME.starting_params.reroll_cost = 20;
+        G.GAME.starting_params.rental_rate = 9;
+        G.GAME.modifiers.enable_rentals_in_shop = true
+        G.GAME.modifiers.money_per_hand = -16;
+
+        G.E_MANAGER:add_event(Event({
+            func = function()
+                for _, playing_card in ipairs(G.playing_cards) do
+                    playing_card:set_ability("m_vremade_gold")
+                end
+                return true
+            end
+        }))
+    end,
+
+    check_for_unlock = function(self, args)
+        return true;
+    end
+}
+
+SMODS.Back{
     key = 'run_the_slots',
     loc_txt = {
         name = "Run the Slots!!!",
         text = {
             "I LOVE GAMBLING!!!",
-            "{C:mult}-1{} Shop Slots",
+            "Rentals appear in shops",
             "Start with {C:money}20${}"
         }
     },
@@ -31,7 +67,7 @@ SMODS.Back{
 
     apply = function(self, back)
         G.GAME.starting_params.dollars = 20
-        change_shop_size(-1)
+        G.GAME.modifiers.enable_rentals_in_shop = true;
     end,
 }
 
@@ -58,3 +94,4 @@ SMODS.Back{
         G.GAME.starting_params.joker_slots = 8
     end,
 }
+
