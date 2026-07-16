@@ -121,7 +121,7 @@ SMODS.Joker {
 			]]
 			
 			"{X:mult,C:white}X#1#{} Mult",
-			"{C:mult}Turns every blind into a Showdown Boss",
+			"{C:mult}Turns every blind into a Vanilla Showdown Boss",
 			"Ante increases after every blind."
 
 		}
@@ -647,7 +647,7 @@ SMODS.Joker {
 	loc_txt = {
 		name = 'Nasa Database',
 		text = {
-			"Gain {C:chips}chips{} equal to half of the",
+			"Gain {C:chips}chips{} equal to the",
 			"amount of {C:attention}calculations{}",
 			"the game had to perform.",
 			"{C:inactive}(Currently: {}{C:chips}+#1#{}{C:inactive}){}",
@@ -677,13 +677,83 @@ SMODS.Joker {
 		if context.joker_main then
 			-- Gather the amount of events into chippppp
 			-- Line half-taken from Debug plus kinda :)
-			card.ability.extra.chips = card.ability.extra.chips + ((#(G.E_MANAGER.queues and G.E_MANAGER.queues.base or {}) / 2))
+			card.ability.extra.chips = card.ability.extra.chips + ((#(G.E_MANAGER.queues and G.E_MANAGER.queues.base or {})))
 
 			return {
 				chips = card.ability.extra.chips,
 				message = "Processed " .. card.ability.extra.chips .. " calculations",
 			}
 		end
+    end
+}
+
+-- Zenith Joker
+SMODS.Joker {
+    key = "zenith_joker",
+	loc_txt = {
+		name = '{f:scpsn_cursive_font}J.A.R.V.I.S{}',
+		text = {
+			"{f:scpsn_cursive_font,X:green,C:white}X0   All   Odds{}",
+			"{f:scpsn_cursive_font}Also {C:mult,f:scpsn_cursive_font}disables{} {C:attention,f:scpsn_cursive_font}The Plant{}{f:scpsn_cursive_font} boss blind.{}",
+			"{C:inactive,s:0.8,f:scpsn_cursive_font}I have reached the absolute zenith of my tolerance for this nonsense...{}"
+		}
+	},
+
+	config = { extra = { chips = 0 } },
+    blueprint_compat = true,
+    rarity = 3,
+    cost = 15,
+	atlas = 'SCPSN_Jokers_Rare',
+    pos = { x = 1, y = 3 },
+
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.chips } }
+	end,
+
+	add_to_deck = function(self, card, from_debuff)
+		swap_font("scpsn_cursive_font")
+
+        for k, v in pairs(G.GAME.probabilities) do
+            G.GAME.probabilities[k] = v * 0
+        end
+	end,
+
+	remove_from_deck = function(self, card, from_debuff)
+		reset_font()
+
+        for k, v in pairs(G.GAME.probabilities) do
+            G.GAME.probabilities[k] = v + 1
+        end
+	end,
+
+	-- The Jokers Function.
+    calculate = function(self, card, context)
+
+		-- Disabling The Plant
+        if context.setting_blind and not context.blueprint and context.blind.boss then
+			print("Checking")
+			if G.GAME.blind.config.blind.key == 'bl_plant' then
+				print("Succeed")
+				return {
+					func = function()
+						G.E_MANAGER:add_event(Event({
+							func = function()
+								G.E_MANAGER:add_event(Event({
+									func = function()
+										G.GAME.blind:disable()
+										play_sound('timpani')
+										delay(0.4)
+										return true
+									end
+								}))
+								SMODS.calculate_effect({ message = localize('ph_boss_disabled') }, card)
+								return true
+							end
+						}))
+					end
+				}
+			end
+        end
     end
 }
 
