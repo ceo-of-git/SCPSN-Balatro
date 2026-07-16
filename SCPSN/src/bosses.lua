@@ -58,7 +58,7 @@ SMODS.Blind{
 
     mult = 2,
     dollars = 4,
-    boss = { min = 4, max = 39, false},
+    boss = { min = 4, max = 39, true},
     boss_colour = HEX('a1fffd'),
 
     loc_txt = {
@@ -123,7 +123,7 @@ SMODS.Blind{
 
     mult = 6,
     dollars = 6,
-    boss = { min = 39, max = 39, false},
+    boss = { min = 39, max = 39, true},
     boss_colour = HEX('ff6200'),
 
     loc_txt = {
@@ -131,7 +131,7 @@ SMODS.Blind{
         label = "AN EVIL HEAT",
         text = {
             "<!> SUDDEN EXTREME TEMPERATURE SHIFT <!>",
-            "LEFTMOST JOKER IS BURNT AFTER EACH HAND",
+            "LEFTMOST JOKER HAS 33% CHANCE TO BURN AFTER EACH HAND",
 
         }
     },

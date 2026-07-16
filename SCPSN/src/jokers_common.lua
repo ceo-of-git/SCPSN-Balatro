@@ -1736,5 +1736,60 @@ SMODS.Joker {
 	end,
 }
 
+-- The Stroker
+SMODS.Joker {
+    key = 'the_stroker',
+	loc_txt = {
+		name = 'The Stroker',
+		text = {
+			"{X:mult,C:white}X#1#{} Mult",
+			"Text becomes illegible",
+			"{C:inactive,s:0.8,f:scpsn_stroker_font}Well damn, isn't this quality!{}"
+		}
+	},
+
+	-- Establish variables here in a list like fashion. Use this always even if the joker doesn't change any variable.
+	-- Example (Vanilla Joker): "config = { extra = { mult = 4 } }"
+	-- Example (Vanilla Runner): "config = { extra = { chips = 0, chip_gain = 15 } },"
+	config = { extra = { mult_mod = 3 } },
+
+	
+	-- Misc Options:
+	atlas = 'SCPSN_Jokers_Common',
+	pos = { x = 2, y = 7 },
+	rarity = 1,					-- 1 common, 2 uncommon, 3 rare, 4 legendary.
+	blueprint_compat = true,	-- Whether it can be copied by blueprint or other jokers.
+	perishable_compat = true,	-- Whether it can have the perishable sticker on it.
+	eternal_compat = true,		-- Whether it can have the eternal sticker on it.
+
+	unlocked = true,			-- Whether this joker is unlocked by default or not.
+	cost = 4,					-- Cost of card in shop.
+	pools = {["scpsn_addition"] = true}, -- Add the Card to this mods pool :)
+
+	loc_vars = function(self, info_queue, card)
+		return {
+			vars = {
+				card.ability.extra.mult_mod,
+			}
+		}
+	end,
+
+	add_to_deck = function(self, card, from_debuff)
+		swap_font("scpsn_stroker_font")
+	end,
+
+	remove_from_deck = function(self, card, from_debuff)
+		reset_font()
+	end,
+
+    calculate = function(self, card, context)
+		if context.joker_main then
+			return {
+				xmult = card.ability.extra.mult_mod
+			}
+		end
+	end,
+}
+
 ----------------------------------------------------------
 ----------- MOD CODE END -----------------------=---------

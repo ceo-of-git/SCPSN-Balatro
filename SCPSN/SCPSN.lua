@@ -14,6 +14,7 @@ assert(SMODS.load_file("src/decks.lua"))()
 --assert(SMODS.load_file("src/vouchers.lua"))()
 --assert(SMODS.load_file("src/editions.lua"))()
 --assert(SMODS.load_file("src/spectrals.lua"))()
+assert(SMODS.load_file("src/misc_functions.lua"))()
 
 if next(SMODS.find_mod('partner')) then -- Optional Partners Dependency
     print("[SCPSN] Partner Compatability LOADING")
