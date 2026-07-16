@@ -34,11 +34,13 @@ SMODS.Back{
         G.E_MANAGER:add_event(Event({
             func = function()
                 for _, playing_card in ipairs(G.playing_cards) do
-                    playing_card:set_ability("m_vremade_gold")
+                    playing_card:set_ability("m_gold")
                 end
                 return true
             end
         }))
+
+        
     end,
 
     check_for_unlock = function(self, args)
