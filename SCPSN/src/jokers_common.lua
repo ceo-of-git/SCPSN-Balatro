@@ -1420,192 +1420,192 @@ SMODS.Joker {
     end
 }
 
--- Targetted Joker (Deathmark exclusive!)
-SMODS.Joker {
-	key = 'wanted_joker',
-	loc_txt = {
-		name = 'Targetted Joker',
-		text = {
-			--[[
-			- The #1# is a variable that's stored in config, and is put into 'loc_vars'.
+-- -- Targetted Joker (Deathmark exclusive!)
+-- SMODS.Joker {
+-- 	key = 'wanted_joker',
+-- 	loc_txt = {
+-- 		name = 'Targetted Joker',
+-- 		text = {
+-- 			--[[
+-- 			- The #1# is a variable that's stored in config, and is put into 'loc_vars'.
 
-			FORMATTING:
-			{C:} -> Color ... Options: mult (red), chips (blue), money (yellow), inactive (dull gray), red (discards), attention (bright orange), dark_edition (negative), green (green)
-			{X:} -> Background color, usually used for XMult
-			{s:} -> Scale, multiplies the text size by the value, like 0.8
-			{V:} -> Variable, allows for a variable to dynamically change the color, like in Castle joker.
+-- 			FORMATTING:
+-- 			{C:} -> Color ... Options: mult (red), chips (blue), money (yellow), inactive (dull gray), red (discards), attention (bright orange), dark_edition (negative), green (green)
+-- 			{X:} -> Background color, usually used for XMult
+-- 			{s:} -> Scale, multiplies the text size by the value, like 0.8
+-- 			{V:} -> Variable, allows for a variable to dynamically change the color, like in Castle joker.
 
-			You can put in {} to RESET all formatting, similar to HTMLS "</color>".
-			#1# = Variable #1 (in the Config section), #2# = Variable #2, etc.
+-- 			You can put in {} to RESET all formatting, similar to HTMLS "</color>".
+-- 			#1# = Variable #1 (in the Config section), #2# = Variable #2, etc.
 
-			Example:
-			{C:mult}+#1# {} Mult  ->  +4 Mult
-			]]
+-- 			Example:
+-- 			{C:mult}+#1# {} Mult  ->  +4 Mult
+-- 			]]
 			
-			"Played {X:mult,C:white}Marked{} Cards",
-			"give {C:money}#1#${} when Scored",
-			"and are then {C:mult}destroyed{}"
+-- 			"Played {X:mult,C:white}Marked{} Cards",
+-- 			"give {C:money}#1#${} when Scored",
+-- 			"and are then {C:mult}destroyed{}"
 
-		}
-	},
+-- 		}
+-- 	},
 
-	-- Establish variables here in a list like fashion. Use this always even if the joker doesn't change any variable.
-	-- Example (Vanilla Joker): "config = { extra = { mult = 4 } }"
-	-- Example (Vanilla Runner): "config = { extra = { chips = 0, chip_gain = 15 } },"
-	config = { extra = { dolladolla = 2 } },
+-- 	-- Establish variables here in a list like fashion. Use this always even if the joker doesn't change any variable.
+-- 	-- Example (Vanilla Joker): "config = { extra = { mult = 4 } }"
+-- 	-- Example (Vanilla Runner): "config = { extra = { chips = 0, chip_gain = 15 } },"
+-- 	config = { extra = { dolladolla = 2 } },
 
 	
-	-- Misc Options:
-	atlas = 'SCPSN_Jokers_Common',
-	pos = { x = 1, y = 6},
-	rarity = 1,					-- 1 common, 2 uncommon, 3 rare, 4 legendary.
-	blueprint_compat = true,	-- Whether it can be copied by blueprint or other jokers.
-	perishable_compat = true,	-- Whether it can have the perishable sticker on it.
-	eternal_compat = true,		-- Whether it can have the eternal sticker on it.
+-- 	-- Misc Options:
+-- 	atlas = 'SCPSN_Jokers_Common',
+-- 	pos = { x = 1, y = 6},
+-- 	rarity = 1,					-- 1 common, 2 uncommon, 3 rare, 4 legendary.
+-- 	blueprint_compat = true,	-- Whether it can be copied by blueprint or other jokers.
+-- 	perishable_compat = true,	-- Whether it can have the perishable sticker on it.
+-- 	eternal_compat = true,		-- Whether it can have the eternal sticker on it.
 
-	unlocked = true,			-- Whether this joker is unlocked by default or not.
-	cost = 10,					-- Cost of card in shop.
-	pools = {["scpsn_addition"] = true}, -- Add the Card to this mods pool :)
+-- 	unlocked = true,			-- Whether this joker is unlocked by default or not.
+-- 	cost = 10,					-- Cost of card in shop.
+-- 	pools = {["scpsn_addition"] = true}, -- Add the Card to this mods pool :)
 
 
-	-- Not 100% Sure what this does at all.
-	loc_vars = function(self, info_queue, card)
-		return { vars = { ( card.ability.extra.dolladolla ) } }
-	end,
+-- 	-- Not 100% Sure what this does at all.
+-- 	loc_vars = function(self, info_queue, card)
+-- 		return { vars = { ( card.ability.extra.dolladolla ) } }
+-- 	end,
 
-	-- The Jokers Function.
-    calculate = function(self, card, context)
+-- 	-- The Jokers Function.
+--     calculate = function(self, card, context)
 
-		if context.individual and context.cardarea == G.play and SMODS.has_enhancement(context.other_card, 'm_scpsn_marked') then
-            G.GAME.dollar_buffer = (G.GAME.dollar_buffer or 0) + card.ability.extra.dolladolla
-            return {
-                dollars = card.ability.extra.dolladolla,
-                func = function() -- This is for timing purposes, it runs after the dollar manipulation
-                    G.E_MANAGER:add_event(Event({
-                        func = function()
-                            G.GAME.dollar_buffer = 0
-                            return true
-                        end
-                    }))
-                end
-            }
-        end
+-- 		if context.individual and context.cardarea == G.play and SMODS.has_enhancement(context.other_card, 'm_scpsn_marked') then
+--             G.GAME.dollar_buffer = (G.GAME.dollar_buffer or 0) + card.ability.extra.dolladolla
+--             return {
+--                 dollars = card.ability.extra.dolladolla,
+--                 func = function() -- This is for timing purposes, it runs after the dollar manipulation
+--                     G.E_MANAGER:add_event(Event({
+--                         func = function()
+--                             G.GAME.dollar_buffer = 0
+--                             return true
+--                         end
+--                     }))
+--                 end
+--             }
+--         end
 
-		if context.after and context.main_eval and not context.blueprint then
-            for _, scored_card in ipairs(context.scoring_hand) do
-                if SMODS.has_enhancement(scored_card, 'm_scpsn_marked') then
-					if scored_card and not scored_card.ability.eternal and not scored_card.getting_sliced then
-						scored_card.getting_sliced = true
-						G.E_MANAGER:add_event(Event({
-							func = function()
-								scored_card:juice_up(0.8, 0.8)
-								scored_card:start_dissolve({ HEX("42301d") }, nil, 1.6)
-								SMODS.destroy_cards(scored_card)
-								return true
-							end
-						}))
-					end
-				end
-            end
+-- 		if context.after and context.main_eval and not context.blueprint then
+--             for _, scored_card in ipairs(context.scoring_hand) do
+--                 if SMODS.has_enhancement(scored_card, 'm_scpsn_marked') then
+-- 					if scored_card and not scored_card.ability.eternal and not scored_card.getting_sliced then
+-- 						scored_card.getting_sliced = true
+-- 						G.E_MANAGER:add_event(Event({
+-- 							func = function()
+-- 								scored_card:juice_up(0.8, 0.8)
+-- 								scored_card:start_dissolve({ HEX("42301d") }, nil, 1.6)
+-- 								SMODS.destroy_cards(scored_card)
+-- 								return true
+-- 							end
+-- 						}))
+-- 					end
+-- 				end
+--             end
 
-			return {
-				message = "Boom, Headshot."
-			}
-        end
-    end,
+-- 			return {
+-- 				message = "Boom, Headshot."
+-- 			}
+--         end
+--     end,
 
-	-- Can only appear if a Deathmarked card is in the deck.
-    in_pool = function(self, args)
-        for _, playing_card in ipairs(G.playing_cards or {}) do
-            if SMODS.has_enhancement(playing_card, 'm_scpsn_marked') then
-                return 
-            end
-        end
-        return false
-    end,
-}
+-- 	-- Can only appear if a Deathmarked card is in the deck.
+--     in_pool = function(self, args)
+--         for _, playing_card in ipairs(G.playing_cards or {}) do
+--             if SMODS.has_enhancement(playing_card, 'm_scpsn_marked') then
+--                 return 
+--             end
+--         end
+--         return false
+--     end,
+-- }
 
--- The Protagonist
-SMODS.Joker {
-	key = 'cruelty_squad_jonkler',
-	loc_txt = {
-		name = 'The Protagonist',
-		text = {
+-- -- The Protagonist
+-- SMODS.Joker {
+-- 	key = 'cruelty_squad_jonkler',
+-- 	loc_txt = {
+-- 		name = 'The Protagonist',
+-- 		text = {
 			
-			"Destroy scored {C:attention}Kings{}",
-			"{C:mult}+#1#{} Mult and {C:money}+#2#${} Cash",
-			"when a face card is scored",
+-- 			"Destroy scored {C:attention}Kings{}",
+-- 			"{C:mult}+#1#{} Mult and {C:money}+#2#${} Cash",
+-- 			"when a face card is scored",
 
-		}
-	},
+-- 		}
+-- 	},
 
-	-- Establish variables here in a list like fashion. Use this always even if the joker doesn't change any variable.
-	-- Example (Vanilla Joker): "config = { extra = { mult = 4 } }"
-	-- Example (Vanilla Runner): "config = { extra = { chips = 0, chip_gain = 15 } },"
-	config = { extra = { mult = 3, dollars = 0.5 } },
+-- 	-- Establish variables here in a list like fashion. Use this always even if the joker doesn't change any variable.
+-- 	-- Example (Vanilla Joker): "config = { extra = { mult = 4 } }"
+-- 	-- Example (Vanilla Runner): "config = { extra = { chips = 0, chip_gain = 15 } },"
+-- 	config = { extra = { mult = 3, dollars = 0.5 } },
 
 	
-	-- Misc Options:
-	atlas = 'SCPSN_Jokers_Common',
-	pos = { x = 2, y = 6 },
-	rarity = 1,					-- 1 common, 2 uncommon, 3 rare, 4 legendary.
-	blueprint_compat = true,	-- Whether it can be copied by blueprint or other jokers.
-	perishable_compat = true,	-- Whether it can have the perishable sticker on it.
-	eternal_compat = true,		-- Whether it can have the eternal sticker on it.
+-- 	-- Misc Options:
+-- 	atlas = 'SCPSN_Jokers_Common',
+-- 	pos = { x = 2, y = 6 },
+-- 	rarity = 1,					-- 1 common, 2 uncommon, 3 rare, 4 legendary.
+-- 	blueprint_compat = true,	-- Whether it can be copied by blueprint or other jokers.
+-- 	perishable_compat = true,	-- Whether it can have the perishable sticker on it.
+-- 	eternal_compat = true,		-- Whether it can have the eternal sticker on it.
 
-	unlocked = true,			-- Whether this joker is unlocked by default or not.
-	cost = 6,					-- Cost of card in shop.
-	pools = {["scpsn_addition"] = true}, -- Add the Card to this mods pool :)
+-- 	unlocked = true,			-- Whether this joker is unlocked by default or not.
+-- 	cost = 6,					-- Cost of card in shop.
+-- 	pools = {["scpsn_addition"] = true}, -- Add the Card to this mods pool :)
 
 
-	-- Not 100% Sure what this does at all.
-	loc_vars = function(self, info_queue, card)
-		return {
-			vars = {
-				card.ability.extra.mult,
-				card.ability.extra.dollars,
-			}
-		}
-	end,
+-- 	-- Not 100% Sure what this does at all.
+-- 	loc_vars = function(self, info_queue, card)
+-- 		return {
+-- 			vars = {
+-- 				card.ability.extra.mult,
+-- 				card.ability.extra.dollars,
+-- 			}
+-- 		}
+-- 	end,
 
-	-- The Jokers Function.
-    calculate = function(self, card, context)
+-- 	-- The Jokers Function.
+--     calculate = function(self, card, context)
 
-		-- Give mult for played Face Cards
-		if context.individual and context.cardarea == G.play then
-			if context.other_card:is_face() then
-				ease_dollars(card.ability.extra.dollars, false)
+-- 		-- Give mult for played Face Cards
+-- 		if context.individual and context.cardarea == G.play then
+-- 			if context.other_card:is_face() then
+-- 				ease_dollars(card.ability.extra.dollars, false)
 
-				return {
-					mult = card.ability.extra.mult,
-				}
-			end
-        end
+-- 				return {
+-- 					mult = card.ability.extra.mult,
+-- 				}
+-- 			end
+--         end
 
-		-- Destroy Scored King Cards
-		if context.after and context.main_eval and not context.blueprint then
-            for _, scored_card in ipairs(context.scoring_hand) do
-				if scored_card:get_id() == 13 and not SMODS.has_enhancement(scored_card, 'm_stone' ) then 
-					if scored_card and not scored_card.ability.eternal and not scored_card.getting_sliced then
-						scored_card.getting_sliced = true
-						G.E_MANAGER:add_event(Event({
-							func = function()
-								scored_card:juice_up(0.8, 0.8)
-								scored_card:start_dissolve({ HEX("42301d") }, nil, 1.6)
-								SMODS.destroy_cards(scored_card)
-								return true
-							end
-						}))
+-- 		-- Destroy Scored King Cards
+-- 		if context.after and context.main_eval and not context.blueprint then
+--             for _, scored_card in ipairs(context.scoring_hand) do
+-- 				if scored_card:get_id() == 13 and not SMODS.has_enhancement(scored_card, 'm_stone' ) then 
+-- 					if scored_card and not scored_card.ability.eternal and not scored_card.getting_sliced then
+-- 						scored_card.getting_sliced = true
+-- 						G.E_MANAGER:add_event(Event({
+-- 							func = function()
+-- 								scored_card:juice_up(0.8, 0.8)
+-- 								scored_card:start_dissolve({ HEX("42301d") }, nil, 1.6)
+-- 								SMODS.destroy_cards(scored_card)
+-- 								return true
+-- 							end
+-- 						}))
 
-						return {
-							message = "Job Complete."
-						}
-					end
-				end
-            end
-        end
-    end,
-}
+-- 						return {
+-- 							message = "Job Complete."
+-- 						}
+-- 					end
+-- 				end
+--             end
+--         end
+--     end,
+-- }
 
 -- Encrusted Key
 SMODS.Joker {

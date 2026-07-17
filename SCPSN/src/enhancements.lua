@@ -54,24 +54,76 @@ SMODS.Enhancement{
     }
 }
 
--- Marked
+-- Sophisticated
 SMODS.Enhancement{
-    key = 'marked',
+    key = 'sophisticated',
     atlas = 'SCPSN_Enhancements',
-    pos = { x = 2, y = 0},
+    pos = { x = 0, y = 1},
     shatters = false,
+    always_scores = true,
+
+    config = { extra = { dupe_amount = 2, dupe_chance = 4 } },
+	loc_vars = function(self, info_queue, card)
+		return {
+			vars = {
+				card.ability.extra.dupe_amount,
+                card.ability.extra.dupe_chance
+			}
+		}
+	end,
+
+    init = function(self)
+        self.config.extra = {
+            dupe_amount = 2,
+            dupe_chance = 4
+        }
+    end,
 
     loc_txt = {
-        name = "Marked",
-        label = "Marked",
+        name = "{f:scpsn_cursive_font}Sophisticated{}",
+        label = "{f:scpsn_cursive_font}Sophisticated{}",
         text = {
-            "Not much on its own {C:inactive}/{}",
-            "Synergizes with Jokers {C:inactive}/{}",
-            "Cannot be {C:mult}Debuffed{}"
+            "Has a {C:green}1 in #2#{} chance to",
+            "remove the {f:scpsn_cursive_font}Sophisticated{} status when scored",
+            "and create {C:attention}#1#{} copies of the card into your hand.",
+            "{C:attention}Failed rolls increase the copies made by 1{}"
         }
     },
 
     calculate = function(self, card, context)
-        SMODS.debuff_card(card, 'prevent_debuff', 'scpsn_death_mark') -- Hopefully works?
-    end
+        if context.main_scoring and context.cardarea == G.play then
+            if SMODS.pseudorandom_probability(card, 'scpsn_sophisticated_status', 1, card.ability.extra.dupe_chance) then
+                -- Copy it DNA Style
+                local copy_count = card.ability.extra.dupe_amount
+
+                for i = 1, copy_count do
+                    local copy_card = copy_card(card)
+                    copy_card:add_to_deck()
+                    G.deck.config.card_limit = G.deck.config.card_limit + 1
+                    table.insert(G.playing_cards, copy_card)
+                    G.hand:emplace(copy_card)
+                    copy_card:set_ability('c_base', nil, true)
+                    copy_card.states.visible = nil
+
+                    G.E_MANAGER:add_event(Event({
+                        func = function()
+                            copy_card:start_materialize()
+                            return true
+                        end
+                    }))
+                end
+
+                -- Remove ability
+                card:set_ability('c_base', nil, true)
+                G.E_MANAGER:add_event(Event({
+                    func = function()
+                        card:juice_up()
+                        return true
+                    end
+                }))
+            else
+                card.ability.extra.dupe_amount = card.ability.extra.dupe_amount + 1
+            end
+        end
+    end,
 }
