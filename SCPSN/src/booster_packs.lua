@@ -16,7 +16,7 @@ SMODS.Booster{
     discovered = true,
     loc_txt= {
         name = 'That hard SCPSN Pack',
-        text = { "Pick {C:attention}#1#{} card out",
+        text = { "Pick {C:attention}#1#{} card out of",
                 "{C:attention}#2#{} SCPSN jokers!", },
         group_name = {"You best be picking something"},
     },
@@ -58,7 +58,7 @@ SMODS.Booster{
     discovered = true,
     loc_txt= {
         name = 'GIGA SCPSN PACK!',
-        text = { "Pick {C:attention}#1#{} card out",
+        text = { "Pick {C:attention}#1#{} card out of",
                 "{C:attention}#2#{} SCPSN jokers!", },
         group_name = {"You best be picking something"},
     },
@@ -100,7 +100,7 @@ SMODS.Booster{
     discovered = true,
     loc_txt= {
         name = 'PS+ Booster Pack',
-        text = { "Pick {C:attention}#1#{} card out",
+        text = { "Pick {C:attention}#1#{} card out of",
                 "{C:attention}#2#{} Tower jokers!", },
         group_name = {"Get to picking buddy"},
     },
