@@ -233,3 +233,65 @@ SMODS.Consumable {
         G.GAME.curse_uses = total_curse_uses + 2
     end,
 }
+
+-- Curse of the Treacherous (Uncommon, Hand levels for Many Curses)
+SMODS.Consumable {
+    key = 'curse_of_the_treacherous',
+    set = 'scpsn_curses',
+
+    atlas = 'SCPSN_curses',
+	pos = { x = 3, y = 0 },
+	soul_pos = { x = 3, y = 1 },
+
+    pools = {["scpsn_curses_uncommon"] = true},
+
+    loc_txt = {
+        name = "Curse of The Treacherous",
+        text = {
+            "{C:attention}+#1#{} Levels to all Hands",
+            "{C:mult}Counts as #2# Curse(s){}",
+            "{C:dark_edition,s:0.8}Repeated usage means diminishing results.{}",
+            "{C:dark_edition,s:0.7}#3# Curses have been suffered this run.{}",
+        }
+    },
+
+    config = { extra = { hand_upgrades = 5 } },
+    loc_vars = function(self, info_queue, card)
+        local total_curse_uses = G.GAME.curse_uses or 0
+        local curse_count_var = math.min(total_curse_uses + 1, 4)
+        local hand_upgrades_var = card.ability.extra.hand_upgrades - curse_count_var
+
+        return { vars = { hand_upgrades_var, curse_count_var, total_curse_uses } }
+    end,
+    
+
+    cost = 3,
+    unlocked = true,
+    discovered = true,
+    hidden = false,
+    
+    can_use = function(self, card)
+        return true
+    end,
+
+    use = function(self, card, area, copier)
+        local total_curse_uses = G.GAME.curse_uses or 0
+        local curse_count_var = math.min(total_curse_uses + 1, 4)
+        local hand_upgrades_var = card.ability.extra.hand_upgrades - curse_count_var
+
+        update_hand_text({ sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3 },
+            { handname = localize('k_all_hands'), chips = '...', mult = '...', level = '' })
+
+        update_hand_text({ sound = 'button', volume = 0.7, pitch = 0.9, delay = 0 }, { level = '+1' })
+        delay(1.3)
+
+        for i = 1, hand_upgrades_var do
+            SMODS.upgrade_poker_hands({ instant = true })
+        end
+        
+        update_hand_text({ sound = 'button', volume = 0.7, pitch = 1.1, delay = 0 },
+            { mult = 0, chips = 0, handname = '', level = '' })
+
+        G.GAME.curse_uses = total_curse_uses + curse_count_var
+    end,
+}

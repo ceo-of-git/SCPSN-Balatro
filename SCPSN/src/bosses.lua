@@ -81,13 +81,10 @@ SMODS.Blind{
     -- The Blinds Function when hands are played.
     calculate = function(self, card, context)
 
-        
-
         if G.GAME.chips >= G.GAME.blind.chips and not self.loc_vars.snowflakeQuirk then
             -- Set flag immediately to prevent infinite loop
             snowflakeQuirk = true
 
-            -- Optionally reset chips here, or inside the event
             G.GAME.chips = 0
             ease_hands_played(5, true)
             ease_discard(4, true)
@@ -423,6 +420,123 @@ SMODS.Blind{
     end
 }
 
+SMODS.Sound({key = "crowd_cheering", path = "crowd_clapping.ogg",})
+SMODS.Sound({key = "crowd_booing", path = "crowd_booing.ogg",})
+
+-- Skill Floor boss (+6 hands, 0.5x blind size, lose to win)
+SMODS.Blind{
+    name = "Skill Floor",
+    key = "skill_floor",
+
+    atlas_table = 'ANIMATION_ATLAS',
+    atlas = 'SCPSN_Blinds',
+    frames = 2,
+    pos = {x = 0, y = 6},
+    unlocked = true,
+
+    mult = 0.5,
+    dollars = 5,
+    boss = { min = 1, max = 67, false},
+    boss_colour = HEX('33597A'),
+
+    loc_txt = {
+        name = "Skill Floor",
+        label = "Skill Floor",
+        text = {
+            "0.5x Blind size, +6 Hands",
+            "Lose to Win, Win to Lose"
+        }
+    },
+    
+    loc_vars = {
+        player_lost_but_actually_won = false
+    },
+
+    -- The Blinds Function when hands are played.
+    calculate = function(self, card, context)
+        if context.setting_blind then
+            ease_hands_played(6, true)
+        end
+
+        if G.GAME.current_round.hands_left == 0 then
+            if to_big(G.GAME.blind.chips) > G.GAME.chips then
+                G.GAME.blind.chips = -1
+                G.GAME.chips = math.huge
+                play_sound('scpsn_crowd_cheering', nil, 0.5)
+                self.loc_vars.player_lost_but_actually_won = true
+            end
+        end
+
+        if context.blind_defeated then
+            if not self.loc_vars.player_lost_but_actually_won then
+                G.GAME.blind.chips = math.huge
+                G.GAME.chips = 0
+                G.STATE = G.STATES.GAME_OVER
+                G.STATE_COMPLETE = false
+                play_sound('scpsn_crowd_booing', nil, 0.5) 
+            end
+        end
+
+    end
+}
 
 
+-- The Blindrooms ()
+-- I am a fucking architect
+SMODS.Blind{
+    name = "Skill Floor",
+    key = "skill_floor",
 
+    atlas_table = 'ANIMATION_ATLAS',
+    atlas = 'SCPSN_Blinds',
+    frames = 2,
+    pos = {x = 0, y = 7},
+    unlocked = true,
+
+    mult = 0.5,
+    dollars = 5,
+    boss = { min = 1, max = 67, false},
+    boss_colour = HEX('33597A'),
+
+    loc_txt = {
+        name = "Skill Floor",
+        label = "Skill Floor",
+        text = {
+            "0.5x Blind size, +6 Hands",
+            "Lose to Win, Win to Lose"
+        }
+    },
+    
+    loc_vars = {
+        player_lost_but_actually_won = false
+    },
+
+    -- The Blinds Function when hands are played.
+    calculate = function(self, card, context)
+        if context.setting_blind then
+            ease_hands_played(6, true)
+        end
+
+        if G.GAME.current_round.hands_left == 0 then
+            if to_big(G.GAME.blind.chips) > G.GAME.chips then
+                G.GAME.blind.chips = -1
+                G.GAME.chips = math.huge
+                play_sound('scpsn_crowd_cheering', nil, 0.5)
+                self.loc_vars.player_lost_but_actually_won = true
+            end
+        end
+
+        if context.blind_defeated then
+            if not self.loc_vars.player_lost_but_actually_won then
+                G.GAME.blind.chips = math.huge
+                G.GAME.chips = 0
+                G.STATE = G.STATES.GAME_OVER
+                G.STATE_COMPLETE = false
+                play_sound('scpsn_crowd_booing', nil, 0.5) 
+            end
+        end
+
+    end
+
+
+}

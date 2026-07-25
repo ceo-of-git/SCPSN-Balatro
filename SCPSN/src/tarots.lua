@@ -107,7 +107,7 @@ SMODS.Consumable {
     set = 'Tarot',
 
     atlas = 'SCPSN_Tarots',
-    pos = {x = 0, y = 1},
+    pos = {x = 3, y = 0},
 
     loc_txt = {
         name = "Steam Trading Card",
@@ -145,11 +145,11 @@ SMODS.Consumable {
 
 -- Death 2: right into left card.
 SMODS.Consumable {
-    key = 'death_2',
+    key = 'scpsn_death_2',
     set = 'Tarot',
 
     atlas = 'SCPSN_Tarots',
-    pos = { x = 1, y = 1 },
+    pos = { x = 4, y = 0 },
 
     loc_txt = {
         name = "Death",
@@ -251,4 +251,39 @@ SMODS.Consumable {
             #G.hand.highlighted <= card.ability.max_highlighted
     end
     --]]
+}
+
+-- Evil Scary Dillar (1$ + Curse Card)
+SMODS.Consumable {
+    key = 'scpsn_evil_dillar',
+    set = 'Tarot',
+
+    atlas = 'SCPSN_Tarots',
+    pos = {x = 5, y = 0},
+
+    loc_txt = {
+        name = "Evil Scary Dillar",
+        label = "Evil Scary Dillar",
+        text = {
+            "{C:dark_edition}+1${}",
+        }
+    },
+
+    use = function(self, card, area, copier)
+        ease_dollars(1)
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.4,
+            func = function()
+                play_sound('timpani')
+                SMODS.add_card({ set = 'scpsn_curses', key_append = "vremade_emp", edition = "e_negative" })
+                card:juice_up(0.3, 0.5)
+                return true
+            end
+        }))
+    end,
+
+    can_use = function(self, card)
+        return true -- ALWAYS...
+    end
 }

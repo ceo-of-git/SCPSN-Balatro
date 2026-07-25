@@ -110,7 +110,8 @@ SMODS.Joker {
 			{C:mult}+#1# {} Mult  ->  +4 Mult
 			]]
 			
-			"Gain infinite {C:mult}Discards{}",
+			"On Discard, gain a {C:dark_edition}Negative Curse{}",
+			"Curse stacks stay at 0."
 
 		}
 	},
@@ -140,12 +141,18 @@ SMODS.Joker {
 	end,
 
     calculate = function(self, card, context)
-		if context.setting_blind then
-			ease_discard(1, true)
-		end
+		G.GAME.curse_uses = 0
 
 		if context.discard and not context.blueprint then
-			ease_discard(1, true)
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.4,
+            func = function()
+                SMODS.add_card({ set = 'scpsn_curses', key_append = "vremade_emp", edition = "e_negative", allow_duplicates = true })
+                card:juice_up(0.3, 0.5)
+                return true
+            end
+        }))
 		end
     end
 }

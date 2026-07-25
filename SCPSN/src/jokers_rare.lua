@@ -293,7 +293,7 @@ SMODS.Joker {
 	},
 	atlas = 'SCPSN_Jokers_Rare',
 
-    pos = { x = 0, y = 1 },
+    pos = { x = 3, y = 0 },
     rarity = 3,
     blueprint_compat = false,
     cost = 8,
@@ -340,7 +340,7 @@ SMODS.Joker {
     rarity = 3,
     cost = 10,
 	atlas = 'SCPSN_Jokers_Rare',
-    pos = { x = 1, y = 1 },
+    pos = { x = 4, y = 0 },
     add_to_deck = function(self, card, from_debuff)
 		SMODS.change_discard_limit(1)
 		SMODS.change_play_limit(1)
@@ -455,7 +455,7 @@ SMODS.Joker {
 	
 	-- Misc Options:
 	atlas = 'SCPSN_Jokers_Rare',
-	pos = { x = 0, y = 2 },
+	pos = { x = 0, y = 1 },
 	rarity = 3,					-- 1 common, 2 uncommon, 3 rare, 4 legendary.
 	blueprint_compat = false,	-- Whether it can be copied by blueprint or other jokers.
 	perishable_compat = true,	-- Whether it can have the perishable sticker on it.
@@ -523,7 +523,7 @@ SMODS.Joker {
 	
 	-- Misc Options:
 	atlas = 'SCPSN_Jokers_Rare',
-	pos = { x = 1, y = 2 },
+	pos = { x = 1, y = 1 },
 	rarity = 3,					-- 1 common, 2 uncommon, 3 rare, 4 legendary.
 	blueprint_compat = false,	-- Whether it can be copied by blueprint or other jokers.
 	perishable_compat = true,	-- Whether it can have the perishable sticker on it.
@@ -592,7 +592,7 @@ SMODS.Joker {
     rarity = 3,
     cost = 30,
 	atlas = 'SCPSN_Jokers_Rare',
-    pos = { x = 2, y = 2 },
+    pos = { x = 2, y = 1 },
 
 	loc_vars = function(self, info_queue, card)
 		return { vars = { G.GAME.probabilities.normal or 1, card.ability.extra.odds} }
@@ -662,7 +662,7 @@ SMODS.Joker {
     rarity = 3,
     cost = 15,
 	atlas = 'SCPSN_Jokers_Rare',
-    pos = { x = 0, y = 3 },
+    pos = { x = 3, y = 1 },
 
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.chips } }
@@ -704,7 +704,7 @@ SMODS.Joker {
     rarity = 3,
     cost = 15,
 	atlas = 'SCPSN_Jokers_Rare',
-    pos = { x = 1, y = 3 },
+    pos = { x = 4, y = 1 },
 
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.chips } }
@@ -754,6 +754,85 @@ SMODS.Joker {
 				}
 			end
         end
+    end
+}
+
+SMODS.Sound({key = "doombox_hit", path = "doombox_proc.ogg",})
+SMODS.Sound({key = "doombox_hit_shatter", path = "doombox_break_proc.ogg",})
+
+-- Doombox
+SMODS.Joker {
+    key = "doombox",
+	loc_txt = {
+		name = 'Doombox',
+		text = {
+			"Glass cards held in hand give {X:mult,C:white}X#1# {} Mult",
+			"But have a {C:green}#2# in #3#{} chance to NOT break"
+		}
+	},
+
+    blueprint_compat = true,
+    rarity = 3,
+    cost = 15,
+	atlas = 'SCPSN_Jokers_Rare',
+    pos = { x = 5, y = 1 },
+
+	config = { extra = { Xmult = 2, odds = 2 } },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.Xmult, (G.GAME.probabilities.normal or 1), card.ability.extra.odds  } }
+	end,
+
+	-- The Jokers Function.
+    calculate = function(self, card, context)
+		if context.joker_main then
+			for _ , v in ipairs(G.hand.cards) do
+				if SMODS.has_enhancement(v , "m_glass") then
+					SMODS.calculate_effect({
+						x_mult = card.ability.extra.Xmult
+					}, card)
+
+					if pseudorandom('doombox') < G.GAME.probabilities.normal / card.ability.extra.odds then
+						-- Dont break
+						G.E_MANAGER:add_event(Event({
+							trigger = 'after',
+							delay = 0.2,
+							func = function()
+								v:juice_up(0.3, 0.5)
+								play_sound('scpsn_doombox_hit', nil, 0.12)
+								return { x_mult = card.ability.extra.Xmult }
+							end}))
+					else
+						-- Break
+						G.E_MANAGER:add_event(Event({
+							trigger = 'after',
+							delay = 0.2,
+							func = function()
+								v:juice_up(0.3, 0.5)
+								SMODS.shatters(v)
+								v:remove()
+								play_sound('scpsn_doombox_hit_shatter', nil, 0.12)
+								return { x_mult = card.ability.extra.Xmult }
+							end}))
+					end
+					delay(0.10)
+				end
+			end
+		end
+
+        -- if context.individual and context.cardarea == G.hand and not context.end_of_round and SMODS.has_enhancement(context.other_card, "m_glass") then
+        --     if context.other_card.debuff then
+        --         return {
+        --             message = localize('k_debuffed'),
+        --             colour = G.C.RED
+        --         }
+        --     else
+
+
+        --         return {
+        --             x_mult = card.ability.extra.Xmult
+        --         }
+        --     end
+        -- end
     end
 }
 
