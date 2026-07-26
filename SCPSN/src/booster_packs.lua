@@ -132,3 +132,48 @@ SMODS.Booster{
 
     in_pool = function() return true end
 }
+
+-- Curse Pack
+SMODS.Booster{
+    key = 'scpsn_boostpack_curses',
+    group_key = "k_scpsn_booster_group",
+    atlas = 'scpsn_boosters', 
+    pos = { x = 1, y = 1 },
+    discovered = true,
+    loc_txt= {
+        name = 'Evil Curse Pack',
+        text = { 
+                "Pick {C:attention}#1#{} curse card out of {C:attention}#2#{}",
+                "{C:dark_edition,s:0.8}Repeated curse usage means diminishing results.{}",
+                "{C:dark_edition,s:0.7}#3# Curses have been suffered this run.{}",
+            },
+        group_name = {"Get to picking buddy"},
+    },
+    
+    draw_hand = false,
+    config = {
+        extra = 2,
+        choose = 1, 
+    },
+
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.choose, card.ability.extra, G.GAME.curse_uses or 0 } }
+    end,
+
+    weight = 0.5,
+    cost = 4,
+    kind = "SCPSN_Pack",
+    
+    create_card = function(self, card, i)
+        ease_background_colour(HEX("330e3d"))
+        return SMODS.create_card({
+            set = "scpsn_curses",
+            area = G.consumeables,
+            skip_materialize = true,
+            soulable = true,
+        })
+    end,
+    select_card = 'consumeables',
+
+    in_pool = function() return true end
+}
