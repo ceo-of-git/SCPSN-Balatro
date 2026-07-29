@@ -287,3 +287,56 @@ SMODS.Consumable {
         return true -- ALWAYS...
     end
 }
+
+-- The Slot Machine
+SMODS.Consumable {
+    key = 'scpsn_slot_machine',
+    set = 'Tarot',
+    atlas = 'SCPSN_Tarots',
+    pos = {x = 0, y = 1},
+
+    loc_txt = {
+        name = "Slot Machine",
+        label = "Slot Machine",
+        text = {
+            "{C:green}50%{} Chance to {X:money,C:white}3x{} {X:money,C:white}Cash!{}",
+            "{C:mult}50%{} Chance to {C:mult}Set Cash to 0{}"
+        }
+    },
+
+    use = function(self, card, area, copier)
+
+        if (math.random() <= 0.5) then
+            -- Unlucky
+            G.E_MANAGER:add_event(Event({
+                trigger = 'after',
+                delay = 0.4,
+                func = function()
+                    play_sound('timpani')
+                    card:juice_up(0.3, 0.5)
+                    ease_dollars(-G.GAME.dollars, true)
+                    return true
+                end
+            }))
+        else
+            -- Chanceful
+            G.E_MANAGER:add_event(Event({
+                trigger = 'after',
+                delay = 0.4,
+                func = function()
+                    play_sound('timpani')
+                    card:juice_up(0.3, 0.5)
+                    ease_dollars(math.max(0, G.GAME.dollars * 2), true)
+                    return true
+                end
+            }))
+            delay(0.6)
+        end
+            
+
+    end,
+
+    can_use = function(self, card)
+        return true
+    end
+}
