@@ -462,7 +462,7 @@ SMODS.Joker {
 
 	unlocked = true,			-- Whether this joker is unlocked by default or not.
 	cost = 10,					-- Cost of card in shop.
-	pools = {["scpsn_addition"] = true},
+	pools = {["crackdown_copyable"] = true, ["scpsn_addition"] = true},
 
 	loc_vars = function(self, info_queue, card)
 		return { vars = { (G.GAME.probabilities.normal or 1), card.ability.extra.odds } }
@@ -593,6 +593,7 @@ SMODS.Joker {
     cost = 30,
 	atlas = 'SCPSN_Jokers_Rare',
     pos = { x = 2, y = 1 },
+	pools = {["scpsn_addition"] = true}, -- Add the Card to this mods pool :)
 
 	loc_vars = function(self, info_queue, card)
 		return { vars = { G.GAME.probabilities.normal or 1, card.ability.extra.odds} }
@@ -663,6 +664,7 @@ SMODS.Joker {
     cost = 15,
 	atlas = 'SCPSN_Jokers_Rare',
     pos = { x = 3, y = 1 },
+	pools = {["crackdown_copyable"] = true, ["scpsn_addition"] = true}, -- Add the Card to this mods pool :)
 
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.chips } }
@@ -705,6 +707,7 @@ SMODS.Joker {
     cost = 15,
 	atlas = 'SCPSN_Jokers_Rare',
     pos = { x = 4, y = 1 },
+	pools = {["scpsn_addition"] = true}, -- Add the Card to this mods pool :)
 
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.chips } }
@@ -781,6 +784,7 @@ SMODS.Joker {
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.Xmult, (G.GAME.probabilities.normal or 1), card.ability.extra.odds  } }
 	end,
+	pools = {["crackdown_copyable"] = true, ["scpsn_addition"] = true}, -- Add the Card to this mods pool :)
 
 	-- The Jokers Function.
     calculate = function(self, card, context)
@@ -833,6 +837,74 @@ SMODS.Joker {
         --         }
         --     end
         -- end
+    end
+}
+
+-- Crackdown
+-- https://media.discordapp.net/attachments/602077288296742913/1532806492233928874/IMG_0839.png?ex=6a796589&is=6a781409&hm=4cb3ce6744d17e2fb7aabf5c2797372e8c650978e02b9dd2aeca638393564109&=&format=webp&quality=lossless&width=765&height=1024
+SMODS.Joker {
+    key = "Crackdown",
+	loc_txt = {
+		name = 'Crackdown',
+		text = {
+			"{C:chips}Cost: 3200{} | Tier 3",
+			"+2.5% + 1.5i% slide             {s:0.6}-8.25% slide{}",
+			"    +7.5% electron mass",
+			"-42% Number of fuel rods in the cassette",
+			"                 {s:1.3}Passive:{}                 ",
+			"+0.07% диаметр фюэелгжа per 1m of crossed distance",
+			"                    in the last 22sec              ",
+			"{s:1.2}Independence from the United Kingdom{} IF in the air"
+		}
+	},
+
+    blueprint_compat = true,
+    rarity = 3,
+    cost = 15,
+	atlas = 'SCPSN_Jokers_Rare',
+    pos = { x = 0, y = 2 },
+	pools = {["scpsn_addition"] = true}, -- Add the Card to this mods pool :)
+
+	config = { extra = {  } },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.Xmult, (G.GAME.probabilities.normal or 1), card.ability.extra.odds  } }
+	end,
+
+	-- The Jokers Function.
+    calculate = function(self, card, context)
+		local compatible = {}
+		for _, jokerinos in ipairs(G.jokers.cards) do
+			if (jokerinos.config.center.pools or {}).crackdown_copyable then
+				compatible[#compatible+1] = jokerinos
+			end
+		end
+
+		-- Make it copy if possible
+		if #compatible > 0 then
+			local other_joker = compatible[math.random(1, #compatible)]
+			return SMODS.blueprint_effect(card, other_joker, context)
+		end
+
+		-- Other random bullshit
+		if context.joker_main then
+			ease_hands_played(pseudorandom('wowza') / 0.64443)
+			ease_dollars(pseudorandom('wowza') / 0.22324)
+			return {
+				mult = pseudorandom('wowza') * 17,
+				x_mult = pseudorandom('wowza') + 1 * 1.020213,
+			}
+		end
+
+        if context.individual and context.cardarea == G.play then
+			if pseudorandom('wowza') > 0.5 then
+				ease_dollars(0.25)
+				return { mult = 1, chips = 3.3, repetitions = 1 }
+			else
+				ease_dollars(-0.40)
+				return { mult = -2 }
+			end
+        end
+		
     end
 }
 
