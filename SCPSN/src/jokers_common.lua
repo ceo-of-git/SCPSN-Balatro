@@ -1661,5 +1661,62 @@ SMODS.Joker {
     end
 }
 
+-- The Stroker
+SMODS.Joker {
+    key = 'sable',
+	loc_txt = {
+		name = 'Sable',
+		text = {
+			"{C:dark_edition}+#1# Jokers{}",
+			"Limits Game Speed to 0.6x"
+		}
+	},
+
+	-- Establish variables here in a list like fashion. Use this always even if the joker doesn't change any variable.
+	-- Example (Vanilla Joker): "config = { extra = { mult = 4 } }"
+	-- Example (Vanilla Runner): "config = { extra = { chips = 0, chip_gain = 15 } },"
+	config = { extra = { negative = 2, old_speed = 0 } },
+
+	
+	-- Misc Options:
+	atlas = 'SCPSN_Jokers_Common',
+	pos = { x = 1, y = 4 },
+	rarity = 1,					-- 1 common, 2 uncommon, 3 rare, 4 legendary.
+	blueprint_compat = true,	-- Whether it can be copied by blueprint or other jokers.
+	perishable_compat = true,	-- Whether it can have the perishable sticker on it.
+	eternal_compat = true,		-- Whether it can have the eternal sticker on it.
+
+	unlocked = true,			-- Whether this joker is unlocked by default or not.
+	cost = 4,					-- Cost of card in shop.
+	pools = {["scpsn_addition"] = true}, -- Add the Card to this mods pool :)
+
+	loc_vars = function(self, info_queue, card)
+		return {
+			vars = {
+				card.ability.extra.negative,
+				card.ability.extra.old_speed
+			}
+		}
+	end,
+
+	add_to_deck = function(self, card, from_debuff)
+		card.ability.extra.old_speed = G.SETTINGS.GAMESPEED
+		G.SETTINGS.GAMESPEED = 0.6
+
+		G.jokers:change_size(card.ability.extra.negative)
+	end,
+
+	remove_from_deck = function(self, card, from_debuff)
+		G.jokers:change_size(-card.ability.extra.negative)
+		G.SETTINGS.GAMESPEED = card.ability.extra.old_speed
+	end,
+
+    calculate = function(self, card, context)
+		if context.setting_blind then
+			G.SETTINGS.GAMESPEED = 0.6
+		end
+	end,
+}
+
 ----------------------------------------------------------
 ----------- MOD CODE END -----------------------=---------
